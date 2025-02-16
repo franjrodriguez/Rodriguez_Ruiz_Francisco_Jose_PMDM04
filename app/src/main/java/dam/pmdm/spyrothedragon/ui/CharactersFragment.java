@@ -22,7 +22,6 @@ import dam.pmdm.spyrothedragon.models.Character;
 import dam.pmdm.spyrothedragon.adapters.CharactersAdapter;
 import dam.pmdm.spyrothedragon.databinding.FragmentCharactersBinding;
 
-
 public class CharactersFragment extends Fragment {
 
     private FragmentCharactersBinding binding;

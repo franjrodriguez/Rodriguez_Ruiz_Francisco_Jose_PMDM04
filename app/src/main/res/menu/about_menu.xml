@@ -5,6 +5,11 @@
         android:id="@+id/action_info"
         android:icon="@android:drawable/ic_menu_info_details"
         android:orderInCategory="100"
-        android:title="Info"
+        android:title="@string/info"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_set_guide"
+        android:icon="@drawable/baseline_reviews_24"
+        android:title="@string/guide"
         app:showAsAction="ifRoom" />
 </menu>

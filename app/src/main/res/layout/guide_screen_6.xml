@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bye_guide_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="16dp"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/rectangle_shape"
+        android:orientation="vertical"
+        android:padding="22dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:contentDescription="@string/spyro_the_dragon"
+                android:layout_width="150dp"
+                android:layout_height="112dp"
+                android:layout_gravity="center"
+                android:src="@drawable/spyro_logo" />
+
+            <ImageView
+                android:contentDescription="@string/spyro_logo"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_marginTop="26dp"
+                android:background="@drawable/litter_spyro"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/TextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:text="@string/recuerda"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+                <TextView
+                    style="@style/TextBodyResumen"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/message_1_resume" />
+                <ImageView
+                    android:contentDescription="@string/boton_personajes"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/boton_personajes" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+                <TextView
+                    style="@style/TextBodyResumen"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/message_2_resume" />
+                <ImageView
+                    android:contentDescription="@string/boton_mundos"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/boton_mundos" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+                <TextView
+                    style="@style/TextBodyResumen"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/message_3_resume" />
+                <ImageView
+                    android:contentDescription="@string/boton_coleccionables"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/boton_coleccionables" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+                <TextView
+                    style="@style/TextBodyResumen"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/message_4_resume" />
+                <ImageView
+                    android:contentDescription="@string/boton_info"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/boton_info" />
+            </TableRow>
+        </TableLayout>
+
+        <TextView
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/mensaje_dos_final"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/button_close_guide_6"
+            style="@style/ButtonStartGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:text="@string/finalizar" />
+
+        <Button
+            android:id="@+id/button_comenzar_6"
+            style="@style/ButtonRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/repetir_guia" />
+
+    </LinearLayout>
+</RelativeLayout>

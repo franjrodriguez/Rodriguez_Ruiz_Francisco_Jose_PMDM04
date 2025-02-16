@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/welcome_guide_layout"
+        android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rectangle_shape"
+        android:padding="32dp"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/paragraph1"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            style="@style/TextTitle"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/paragraph2"
+            android:layout_gravity="center"
+            style="@style/TextBody" />
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="112dp"
+            android:layout_gravity="center"
+            android:src="@drawable/spyro_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/paragraph3"
+            style="@style/TextBody" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:textAlignment="center"
+            android:text="@string/paragraph4"
+            style="@style/TextBody" />
+
+        <ImageView
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/litter_spyro"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="26dp"/>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="96dp"
+                android:src="@drawable/gemadorada"
+                android:layout_gravity="center_horizontal"/>
+
+            <Button
+                android:id="@+id/continue_button_1"
+                style="@style/ButtonStartGuide"
+                android:text="@string/comenzar" />
+        </FrameLayout>
+
+        <Button
+            style="@style/ButtonExitGuideDark"
+            android:text="@string/saltar_guia"
+            android:layout_gravity="center"
+            android:id="@+id/TextTitle1" />
+    </LinearLayout>
+</RelativeLayout>
