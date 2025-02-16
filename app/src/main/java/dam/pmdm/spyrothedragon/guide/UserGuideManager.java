@@ -2,8 +2,11 @@ package dam.pmdm.spyrothedragon.guide;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -21,6 +24,8 @@ public class UserGuideManager {
     private int currentScreen = 0;
     private NavController navController;
     private DrawerLayout drawerLayout;
+    private AnimationDrawable elora1Animation;
+    private AnimationDrawable elora2Animation;
 
     public UserGuideManager(Activity activity, SharedPreferences sharedPreferences, View[] guideScreens, NavController navController, DrawerLayout drawerLayout) {
         this.activity = activity;
@@ -28,9 +33,11 @@ public class UserGuideManager {
         this.guideScreens = guideScreens;
         this.navController = navController;
         this.drawerLayout = drawerLayout;
+        //
         // Asignar OnClickListener a los botones de continuar y saltar
         for (int i = 0; i < guideScreens.length; i++) {
             View guideScreen = guideScreens[i];
+
             int buttonIdContinue = activity.getResources().getIdentifier(
                     "continue_button_" + (i + 1), // Nombre del ID
                     "id", // Tipo de recurso
@@ -68,7 +75,53 @@ public class UserGuideManager {
                     repeatButton.setOnClickListener(v -> repeatGuide());
                 }
             }
+
+            // Cofniguracion del efecto ripple para el boton continue de las pantallas 2, 3, 4 y 5
+            if (i >= 1 && i <= 5) {
+                Button continueButton = guideScreen.findViewById(buttonIdContinue);
+                if (continueButton != null) {
+                    TypedValue outValue = new TypedValue();
+                    activity.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
+                    continueButton.setBackgroundResource(outValue.resourceId);
+                    continueButton.setClickable(true);
+                }
+            }
+
+            // Configuracion de la animación de Elora en las pantallas 2 y 4 (elora_1)
+            if (i == 1 || i == 3) {
+                ImageView elora1ImageView = guideScreen.findViewById(R.id.elora_1);
+                if (elora1ImageView != null) {
+                    setupElora1Animation(elora1ImageView);
+                }
+            }
+            // Configuracion de la animación de Elora en las pantallas 3 y 5 (elora_2)
+            if (i == 2 || i == 4) {
+                ImageView elora2ImageView = guideScreen.findViewById(R.id.elora_2);
+                if (elora2ImageView != null) {
+                    setupElora2Animation(elora2ImageView);
+                }
+            }
         }
+    }
+
+    private void setupElora1Animation(ImageView imageView) {
+        imageView.setBackgroundResource(R.drawable.animation_elora_1); // Asegúrate de tener este recurso
+        elora1Animation = (AnimationDrawable) imageView.getBackground();
+        imageView.post(() -> {
+            if (elora1Animation != null) {
+                elora1Animation.start();
+            }
+        });
+    }
+
+    private void setupElora2Animation(ImageView imageView) {
+        imageView.setBackgroundResource(R.drawable.animation_elora_2); // Asegúrate de tener este recurso
+        elora2Animation = (AnimationDrawable) imageView.getBackground();
+        imageView.post(() -> {
+            if (elora2Animation != null) {
+                elora2Animation.start();
+            }
+        });
     }
 
     public void setGuideVisualized(boolean isVisualized) {
