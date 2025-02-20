@@ -1,70 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/guide_screen_3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
-    android:id="@+id/guide_screen_3"
     android:visibility="gone">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/first_page_guide_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white_transparent"
-        android:clickable="true">
+    <TextView
+        android:id="@+id/hamburguesa"
+        style="@style/TextMessageGuide"
+        android:layout_width="227dp"
+        android:layout_height="112dp"
+        android:background="@drawable/speech_bubble"
+        android:text="@string/mensaje_pantalla_tres"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.733"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.686" />
 
-        <TextView
-            android:id="@+id/hamburguesa"
-            style="@style/TextMessageGuide"
-            android:background="@drawable/speech_bubble"
-            android:text="@string/mensaje_pantalla_tres"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.677" />
+    <ImageView
+        android:id="@+id/elora_2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:contentDescription="@string/elora"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.988"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.91" />
 
-        <android.widget.Button
-            android:id="@+id/exit_guide_3"
-            style="@style/ButtonExitGuide"
-            android:text="@string/saltar_guia"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.95"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.023" />
+    <android.widget.Button
+        android:id="@+id/exit_guide_3"
+        style="@style/ButtonExitGuide"
+        android:text="@string/saltar_guia"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.004" />
 
-        <android.widget.Button
-            android:id="@+id/continue_button_3"
-            android:layout_width="149dp"
-            android:layout_height="64dp"
-            android:background="@drawable/ripple_effect"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.543"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+    <android.widget.Button
+        android:id="@+id/continue_button_3"
+        android:layout_width="149dp"
+        android:layout_height="64dp"
+        android:background="@drawable/ripple_effect"
+        android:contentDescription="@string/continuar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.416"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.998" />
 
-        <ImageView
-            android:id="@+id/elora_2"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="188dp"
-            android:contentDescription="@string/elora"
-            android:src="@drawable/animation_elora_1"
-            app:layout_constraintBottom_toTopOf="@+id/hamburguesa"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.737"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.97" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

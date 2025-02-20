@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="true">
-    <item android:drawable="@drawable/elora_32" android:duration="100" />
-    <item android:drawable="@drawable/elora_33" android:duration="100" />
-    <item android:drawable="@drawable/elora_34" android:duration="100" />
-    <item android:drawable="@drawable/elora_35" android:duration="100" />
-    <item android:drawable="@drawable/elora_36" android:duration="100" />
-    <item android:drawable="@drawable/elora_37" android:duration="100" />
+    <item android:drawable="@drawable/elora_10" android:duration="200" />
+    <item android:drawable="@drawable/elora_11" android:duration="200" />
+    <item android:drawable="@drawable/elora_12" android:duration="200" />
+    <item android:drawable="@drawable/elora_13" android:duration="200" />
+    <item android:drawable="@drawable/elora_14" android:duration="200" />
+    <item android:drawable="@drawable/elora_15" android:duration="200" />
+    <item android:drawable="@drawable/elora_16" android:duration="200" />
+    <item android:drawable="@drawable/elora_17" android:duration="200" />
+    <item android:drawable="@drawable/elora_18" android:duration="200" />
+    <item android:drawable="@drawable/elora_19" android:duration="200" />
+    <item android:drawable="@drawable/elora_20" android:duration="200" />
+    <item android:drawable="@drawable/elora_21" android:duration="200" />
+    <item android:drawable="@drawable/elora_22" android:duration="200" />
+    <item android:drawable="@drawable/elora_23" android:duration="200" />
+    <item android:drawable="@drawable/elora_24" android:duration="200" />
+    <item android:drawable="@drawable/elora_25" android:duration="200" />
+    <item android:drawable="@drawable/elora_26" android:duration="200" />
+    <item android:drawable="@drawable/elora_27" android:duration="200" />
+    <item android:drawable="@drawable/elora_28" android:duration="200" />
+    <item android:drawable="@drawable/elora_29" android:duration="200" />
 </animation-list>

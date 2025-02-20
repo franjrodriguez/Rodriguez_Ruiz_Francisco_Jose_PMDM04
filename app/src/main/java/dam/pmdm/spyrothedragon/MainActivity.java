@@ -6,8 +6,10 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -57,12 +59,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 /*
-**  Verificación de la existencia del testigo en las sharedpreferences
-*   para comprobar si es la primera vez que la guia de usuario se muestra.
-*   En caso afirmativo (no existe la key en sharedpreferences) se muestra la guia.
+*   Aquí comienza el código de MainActivity relacionado con la visualización
+*   de la Guía de Usuario. Tan solo cargo lo que necesito (las pantallas de la guia
+*   y le cedo el control a UserGuideManager que gestiona cualquier aspecto de la misma.
  */
         // Obtener la referencia al drawerLayout de la mainactivity
         drawerLayout = binding.drawerLayout;
+        ActionBar actionBar = getSupportActionBar();
 
         // Inicializar la UserGuideManager
         View[] guideScreens = {
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.guide_screen_6)
         };
         SharedPreferences sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
-        userGuideManager = new UserGuideManager(this, sharedPreferences, guideScreens, navController, drawerLayout);
+        userGuideManager = new UserGuideManager(this, sharedPreferences, guideScreens, navController, drawerLayout, actionBar);
 
         // Iniciar la guia (si es necesario... es la propia clase la que se encarga de gestionarlo.
         userGuideManager.startGuide();
@@ -106,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (item.getItemId() == R.id.action_set_guide) {
             userGuideManager.setGuideVisualized(false);      // Desactiva el estado de visualización de la guia para poder verla nuevamente.
+            Toast.makeText(this, "Se ha restaurado la opción para poder visualizar la guia", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }

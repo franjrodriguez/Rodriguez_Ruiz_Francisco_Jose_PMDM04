@@ -2,7 +2,7 @@
     <!-- Estado presionado -->
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="#00000000"/> <!-- Rojo transparente (50% de opacidad) -->
+            <solid android:color="#6A0DADCC"/>
             <corners android:radius="300dp"/>
         </shape>
     </item>
@@ -10,7 +10,7 @@
     <!-- Estado por defecto (no presionado) -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#77000000"/> <!-- Color original -->
+            <solid android:color="#6A0DAD80"/>
             <corners android:radius="300dp"/>
         </shape>
     </item>
