@@ -7,10 +7,31 @@
     android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="gone">
+    android:visibility="">
+
+    <android.widget.Button
+        android:id="@+id/button_fire_dragon"
+        android:layout_width="181dp"
+        android:layout_height="150dp"
+        android:background="@color/white_transparent"
+        android:contentDescription="@string/fire"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.004"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.123" />
+
+    <!-- Add DragonFireView para dibujar las llamas -->
+    <dam.pmdm.spyrothedragon.guide.DragonFireView
+        android:id="@+id/dragonFireView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/hamburguesa"
+        android:visibility="invisible"
         style="@style/TextMessageGuide"
         android:layout_width="268dp"
         android:layout_height="148dp"
@@ -49,7 +70,7 @@
         app:layout_constraintVertical_bias="0.983" />
 
     <ImageView
-        android:id="@+id/elora_1"
+        android:id="@+id/elora_2"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:contentDescription="@string/elora"

@@ -7,10 +7,10 @@
     android:background="@drawable/rectangle_shape"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="gone">
+    android:visibility="">
 
     <ImageView
-        android:id="@+id/elora_3"
+        android:id="@+id/elora_6"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:contentDescription="@string/elora"

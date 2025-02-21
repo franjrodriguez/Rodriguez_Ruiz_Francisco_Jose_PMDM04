@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:padding="16dp"
-    android:visibility="gone">
+    android:visibility="">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/first_page_guide_layout"
@@ -19,6 +19,7 @@
 
         <TextView
             android:id="@+id/hamburguesa"
+            android:visibility="invisible"
             style="@style/TextMessageGuide"
             android:layout_width="233dp"
             android:layout_height="146dp"
@@ -57,7 +58,7 @@
             app:layout_constraintVertical_bias="0.003" />
 
         <ImageView
-            android:id="@+id/elora_3"
+            android:id="@+id/elora_5"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:contentDescription="@string/elora"

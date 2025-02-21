@@ -8,10 +8,11 @@
     android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="gone">
+    android:visibility="">
 
     <TextView
         android:id="@+id/hamburguesa"
+        android:visibility="invisible"
         style="@style/TextMessageGuide"
         android:layout_width="260dp"
         android:layout_height="128dp"
@@ -49,7 +50,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/elora_3"
+        android:id="@+id/elora_4"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:contentDescription="@string/elora"

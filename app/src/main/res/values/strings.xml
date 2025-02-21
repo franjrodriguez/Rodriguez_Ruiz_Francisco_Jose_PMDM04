@@ -36,4 +36,5 @@
     <string name="mensaje_dos_final">A partir de ahora, tú tomas el control del juego. Diviertete!</string>
     <string name="recuerda">Recuerda…</string>
     <string name="continuar">Continuar</string>
+    <string name="fire">Lanza fuego</string>
 </resources>
