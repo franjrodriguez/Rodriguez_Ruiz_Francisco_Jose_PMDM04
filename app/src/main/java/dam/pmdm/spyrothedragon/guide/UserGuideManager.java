@@ -1,31 +1,26 @@
 package dam.pmdm.spyrothedragon.guide;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.util.TypedValue;
-import android.view.MotionEvent;
+import android.os.Looper;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import dam.pmdm.spyrothedragon.R;
 
 public class UserGuideManager {
     private static final String SETTING_VIEW_GUIDE = "isViewedGuide";
-    private static final int ANIMATION_REPEAT_COUNT = -1; // Número de repeticiones de la animación. -1 = infinito
     private static final int TIME_ANIMATIONS = 2500;
     private final ActionBar actionBar;
 
@@ -36,8 +31,17 @@ public class UserGuideManager {
     private int currentScreen = 0;
     private NavController navController;
     private DrawerLayout drawerLayout;
-    private AnimationDrawable elora1Animation;
-    private AnimationDrawable elora2Animation;
+
+    private int buttonClickCount = 0;
+
+    // Mapeo de pantallas a IDs de recursos
+    private static final int[] SCREEN_IDS = {
+            R.id.guide_screen_1, // screen == 0
+            R.id.guide_screen_2, // screen == 1
+            R.id.guide_screen_3, // screen == 2
+            R.id.guide_screen_4, // screen == 3
+            R.id.guide_screen_5  // screen == 4
+    };
 
     public UserGuideManager(Activity activity, SharedPreferences sharedPreferences, View[] guideScreens, NavController navController, DrawerLayout drawerLayout, ActionBar actionBar) {
         this.activity = activity;
@@ -57,9 +61,14 @@ public class UserGuideManager {
         for (int i = 0; i < guideScreens.length; i++) {
             View guideScreen = guideScreens[i];
 
-            // Estoy en guide_screen_2 -> preparar fogata de dragon
+            // Preparamos Easter Egg con animacion de llamas
             if (i == 1) {
                 setupFireButton(guideScreen);
+            }
+
+            // Preparamos Easter Egg con video
+            if (i == 4) {
+                setupVideoButton(guideScreen);
             }
 
             // Para todas las guide_screen entre 1 y 5, indice 0 a 4, registro el continue_button y el exit_guide
@@ -110,37 +119,44 @@ public class UserGuideManager {
                     repeatButton.setOnClickListener(v -> repeatGuide());
                 }
             }
-
-            ImageView eloraImageView = guideScreens[i].findViewById(
-                    activity.getResources().getIdentifier("elora_" + i, "id", activity.getPackageName()));
-            if (eloraImageView != null) {
-                setupEloraAnimation(i + 1, eloraImageView); // Llamamos al método con el número de pantalla
-            }
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    private void setupEloraAnimation(int screen, ImageView eloraImageView) {
+        // Obtener la animación y el sonido correspondientes
+        int animationRes = getAnimationResourceFromScreen(screen);
+        int soundRes = getSoundResourceFromScreen(screen);
+
+        // Configurar la animación
+        if (animationRes != -1) {
+            AnimationDrawable animation = (AnimationDrawable) activity.getResources().getDrawable(animationRes);
+            eloraImageView.setImageDrawable(animation);
+            animation.start();
+        }
+
+        // Reproducir el sonido
+        if (soundRes != -1) {
+            SoundManager.playSound(activity, soundRes);
+        }
+    }
+
     private void setupFireButton(View guideScreen) {
         Button buttonFireDragon = guideScreen.findViewById(R.id.button_fire_dragon);
         if (buttonFireDragon != null) {
-            buttonFireDragon.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    DragonFireView dragonFireView = guideScreen.findViewById(R.id.dragonFireView);
-                    if (dragonFireView != null)
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                dragonFireView.setVisibility(View.VISIBLE);
-                                dragonFireView.launchFire();
-                                return true;
-                            case MotionEvent.ACTION_UP:
-                            case MotionEvent.ACTION_CANCEL:
-                                dragonFireView.stopFire();
-                                dragonFireView.setVisibility(View.INVISIBLE);
-                                return true;
-                        }
-                    return false;
+            buttonFireDragon.setOnLongClickListener(v -> {
+                DragonFireView dragonFireView = guideScreen.findViewById(R.id.dragonFireView);
+                if (dragonFireView != null) {
+                    dragonFireView.setVisibility(View.VISIBLE);
+                    dragonFireView.launchFire();
+                    SoundManager.playSound(v.getContext(), R.raw.roar);
+
+                    // Detener la animacion despues de 2 segundos
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        dragonFireView.stopFire();
+                        dragonFireView.setVisibility(View.INVISIBLE);
+                    }, TIME_ANIMATIONS);
                 }
+                return true;    // Esto es para indicar que el evento fue manejado
             });
         }
     }
@@ -158,6 +174,7 @@ public class UserGuideManager {
         // Detenemos la animación cuando se hace clic
         // ... y lanzamos la siguiente pantalla
         button.setOnClickListener(v -> {
+            SoundManager.playSound(v.getContext(), R.raw.menu);
             button.clearAnimation();
             nextScreen();
         });
@@ -178,17 +195,16 @@ public class UserGuideManager {
         if (screen < guideScreens.length) {
             guideScreens[screen].setVisibility(View.VISIBLE);
 
-            // Obtengo la imagen de Elora para la pantalla en curso
-            ImageView eloraImageView = getEloraImageViewForScreen(guideScreens[screen], screen);
-
             // Aplicando animaciones según la pantalla en la que me encuentro
             animateScreenElements(screen, activity);
 
             // Aplicando la narracion de Elora según la pantalla en la que me encuentro con un retraso
             // para esperar un poco la aparición de la hamburguesa...
             new Handler().postDelayed(() -> {
-                playEloraSound(screen);
-            }, TIME_ANIMATIONS);
+                ImageView eloraImageView = getEloraImageViewForScreen(guideScreens[screen], screen);
+                if (eloraImageView != null) {
+                    setupEloraAnimation(screen + 1, eloraImageView); // Llamamos al método con el número de pantalla
+                }            }, TIME_ANIMATIONS);
         } else {
             finishGuide();
         }
@@ -202,9 +218,11 @@ public class UserGuideManager {
         }
 
         // Animar linearLayoutFadeIn para pantallas 1 y 5
-        if (screen == 1 || screen == 5) {
-            View linearLayoutFadeIn = guideScreens[screen].findViewById(R.id.linearLayoutFadeIn);
+        if (screen == 0 || screen == 4) {
+            int screenId = SCREEN_IDS[screen];
+            View linearLayoutFadeIn = guideScreens[screen].findViewById(screenId);
             startFadeInAnimation(linearLayoutFadeIn, activity);
+            SoundManager.playSound(activity, R.raw.portal);
         }
     }
 
@@ -235,25 +253,17 @@ public class UserGuideManager {
     public void cancelGuide() {
         deactivateScreens();
         unlockDrawerLayout();
-        freeMemoryPlayer();
-
+        SoundManager.freeMemoryPlayer();
         sharedPreferences.edit().putBoolean(SETTING_VIEW_GUIDE, false).apply();
     }
 
     public void finishGuide() {
         deactivateScreens();
         unlockDrawerLayout();
-        freeMemoryPlayer();
-
+        SoundManager.freeMemoryPlayer();
         sharedPreferences.edit().putBoolean(SETTING_VIEW_GUIDE, true).apply();
     }
 
-    private void freeMemoryPlayer() {
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-    }
 
     public void deactivateScreens() {
         // Restaura el menu
@@ -339,15 +349,21 @@ public class UserGuideManager {
         }
     }
 
-    private void playEloraSound(int screen) {
-        int soundResource = getSoundResourceFromScreen(screen);
-        if (soundResource != -1) {
-            // Detener cualquier sonido que esté reproduciéndose
-            if (mediaPlayer != null) {
-                mediaPlayer.release();
-            }
-            mediaPlayer = MediaPlayer.create(activity, soundResource);
-            mediaPlayer.start();
+    private void setupVideoButton(View guideScreen) {
+        Button buttonFireDragon = guideScreen.findViewById(R.id.button_fire_dragon);
+        VideoView videoView = guideScreen.findViewById(R.id.video_view);
+        VideoManager videoManager = new VideoManager(videoView);
+
+        if (buttonFireDragon != null) {
+            buttonFireDragon.setOnClickListener(v -> {
+                buttonClickCount++;
+
+                // Si se ha pulsado 4 veces, reproducir el video
+                if (buttonClickCount == 4) {
+                    videoManager.playVideo(v.getContext(), R.raw.spyrothedragon); // Reemplaza con tu video
+                    buttonClickCount = 0; // Reiniciar el contador
+                }
+            });
         }
     }
 }
