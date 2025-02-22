@@ -20,8 +20,11 @@ import androidx.navigation.NavController;
 import dam.pmdm.spyrothedragon.R;
 
 public class UserGuideManager {
+    private static final String TAG = "FRANTAG -->";
     private static final String SETTING_VIEW_GUIDE = "isViewedGuide";
     private static final int TIME_ANIMATIONS = 2500;
+    private static final long FADE_DURATION = 1000;
+    private static final long ELORA_DELAY = 1000;
     private final ActionBar actionBar;
 
     private MediaPlayer mediaPlayer;
@@ -40,10 +43,13 @@ public class UserGuideManager {
             R.id.guide_screen_2, // screen == 1
             R.id.guide_screen_3, // screen == 2
             R.id.guide_screen_4, // screen == 3
-            R.id.guide_screen_5  // screen == 4
+            R.id.guide_screen_5,  // screen == 4
+            R.id.guide_screen_6     // screen == 5
     };
 
-    public UserGuideManager(Activity activity, SharedPreferences sharedPreferences, View[] guideScreens, NavController navController, DrawerLayout drawerLayout, ActionBar actionBar) {
+    public UserGuideManager(Activity activity, SharedPreferences sharedPreferences,
+                            View[] guideScreens, NavController navController,
+                            DrawerLayout drawerLayout, ActionBar actionBar) {
         this.activity = activity;
         this.sharedPreferences = sharedPreferences;
         this.guideScreens = guideScreens;
@@ -51,75 +57,143 @@ public class UserGuideManager {
         this.drawerLayout = drawerLayout;
         this.actionBar = actionBar;
         //
-        //
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayShowHomeEnabled(false);
         }
-        // Asignar OnClickListener a los botones de continuar y saltar
+        // Inicializar los botones de toda la guia
+        setupGuideButtons();
+        currentScreen = 0;
+    }
+
+    public void startGuide() {
+        if (!sharedPreferences.getBoolean(SETTING_VIEW_GUIDE, false)) {
+            lockDrawerLayout();
+            showScreen(currentScreen);
+        }
+    }
+
+    private void setupGuideButtons() {
         for (int i = 0; i < guideScreens.length; i++) {
-            View guideScreen = guideScreens[i];
+            View screen = guideScreens[i];
+            if (i < 5) { // Pantallas 1 a 5
+                int continueButtonId = activity.getResources().getIdentifier(
+                        "continue_button_" + (i + 1), "id", activity.getPackageName());
+                int exitButtonId = activity.getResources().getIdentifier(
+                        "exit_guide_" + (i + 1), "id", activity.getPackageName());
 
-            // Preparamos Easter Egg con animacion de llamas
-            if (i == 1) {
-                setupFireButton(guideScreen);
-            }
-
-            // Preparamos Easter Egg con video
-            if (i == 4) {
-                setupVideoButton(guideScreen);
-            }
-
-            // Para todas las guide_screen entre 1 y 5, indice 0 a 4, registro el continue_button y el exit_guide
-            if (i != 5) {
-                int buttonIdContinue = activity.getResources().getIdentifier(
-                        "continue_button_" + (i + 1), // Nombre del ID
-                        "id", // Tipo de recurso
-                        activity.getPackageName()
-                );
-                int buttonIdExit = activity.getResources().getIdentifier(
-                        "exit_guide_" + (i + 1), // Nombre del ID
-                        "id", // Tipo de recurso
-                        activity.getPackageName()
-                );
-
-                // Asignacion de onClickListener a continuar y gestion de la animación
-                Button continueButton = guideScreen.findViewById(buttonIdContinue);
+                Button continueButton = screen.findViewById(continueButtonId);
                 if (continueButton != null) {
-                    if (i > 0 && i < 5) {               // ... si me encuentro entre las pantallas 2 y 5 (no es ni la primera ni la ultima)
-                        setupContinueButtonAnimation(continueButton);
-                    }
-                    continueButton.setOnClickListener(v -> {
-                        nextScreen();
-                    });
+                    continueButton.setOnClickListener(v -> nextScreen());
                 }
 
-                Button exitButton = guideScreen.findViewById(buttonIdExit);
+                Button exitButton = screen.findViewById(exitButtonId);
                 if (exitButton != null) {
                     exitButton.setOnClickListener(v -> cancelGuide());
                 }
-            } else {
-                int buttonIdClosed = activity.getResources().getIdentifier(
-                        "button_close_guide_6",
-                        "id",
-                        activity.getPackageName());
-                Button finishButton = guideScreen.findViewById(buttonIdClosed);
-
-                int buttonIdRepeat = activity.getResources().getIdentifier(
-                        "button_comenzar_6",
-                        "id",
-                        activity.getPackageName());
-                Button repeatButton = guideScreen.findViewById(buttonIdRepeat);
-
-                if (finishButton != null) {
-                    finishButton.setOnClickListener(v -> finishGuide());
+            } else { // Pantalla 6
+                Button closeButton = screen.findViewById(R.id.button_close_guide_6);
+                if (closeButton != null) {
+                    closeButton.setOnClickListener(v -> finishGuide());
                 }
+
+                Button repeatButton = screen.findViewById(R.id.button_comenzar_6);
                 if (repeatButton != null) {
                     repeatButton.setOnClickListener(v -> repeatGuide());
                 }
             }
         }
+    }
+
+    private void showScreen(int screen) {
+        if (screen < guideScreens.length) {
+            View screenView = guideScreens[screen];
+
+            // Cargamos las pantallas con fadeIn
+            screenView.setAlpha(0f);
+            screenView.setVisibility(View.VISIBLE);
+            Animation fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
+            fadeIn.setDuration(FADE_DURATION);
+            screenView.startAnimation(fadeIn);
+
+            // Aplicando animaciones según la pantalla en la que me encuentro
+            animateScreenElements(screen);
+
+            // Configurar Elora
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                int eloraId = activity.getResources().getIdentifier(
+                        "elora_" + (screen + 1), "id", activity.getPackageName());
+                ImageView eloraView = screenView.findViewById(eloraId);
+                if (eloraView != null) {
+                    setupEloraAnimation(screen, eloraView);
+                }
+            }, ELORA_DELAY);
+        } else {
+            finishGuide();
+        }
+    }
+
+    private void animateScreenElements(int screen) {
+        // Animar hamburguesa para pantallas 2 a 5
+        if (screen >= 1 && screen <= 4) {
+            int hamburguesaId = activity.getResources().getIdentifier(
+                    "hambunguesa_" + (screen + 1), "id", activity.getPackageName());
+            View hamburguesa = guideScreens[screen].findViewById(hamburguesaId);
+            if (hamburguesa != null) {
+                hamburguesa.setAlpha(0f);
+                hamburguesa.setVisibility(View.VISIBLE);
+                Animation fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
+                fadeIn.setDuration(FADE_DURATION);
+            }
+
+            // Animar el continue_button de las pantallas 2 a 5 con pulse
+            int continueButtonId = activity.getResources().getIdentifier(
+                    "continue_button_" + (screen + 1), "id", activity.getPackageName());
+            Button continueButton = guideScreens[screen].findViewById(continueButtonId);
+            if (continueButton != null) {
+                Animation pulse = AnimationUtils.loadAnimation(activity, R.anim.pulse);
+                continueButton.startAnimation(pulse);
+            }
+        }
+    }
+
+    private void startFadeInAnimation(View view, Activity activity) {
+        if (view != null) {
+            Animation fadeInAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
+            view.startAnimation(fadeInAnimation);
+        }
+    }
+
+    public void nextScreen() {
+        guideScreens[currentScreen].setVisibility(View.GONE);
+        currentScreen++;
+
+        // Navegacion de fragment entre las pantallas 2 y 3 unicamente
+        if (currentScreen == 2) {
+            navController.navigate(R.id.action_navigation_characters_to_navigation_worlds);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> showScreen(currentScreen), 300);
+        } else if (currentScreen == 3) {
+            navController.navigate(R.id.action_navigation_worlds_to_navigation_collectibles);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> showScreen(currentScreen), 300);
+        } else {
+            // Muestra la pantalla de la guia
+            showScreen(currentScreen);
+        }
+    }
+
+    public void cancelGuide() {
+        finishGuide();
+        unlockDrawerLayout();
+        SoundManager.freeMemoryPlayer();
+        sharedPreferences.edit().putBoolean(SETTING_VIEW_GUIDE, false).apply();
+    }
+
+    public void finishGuide() {
+        hideAllScreens();
+        unlockDrawerLayout();
+        SoundManager.freeMemoryPlayer();
+        sharedPreferences.edit().putBoolean(SETTING_VIEW_GUIDE, true).apply();
     }
 
     private void setupEloraAnimation(int screen, ImageView eloraImageView) {
@@ -184,100 +258,6 @@ public class UserGuideManager {
         sharedPreferences.edit().putBoolean(SETTING_VIEW_GUIDE, isVisualized).apply();
     }
 
-    public void startGuide() {
-        if (!sharedPreferences.getBoolean(SETTING_VIEW_GUIDE, false)) {
-            lockDrawerLayout();
-            showScreen(currentScreen);
-        }
-    }
-
-    private void showScreen(int screen) {
-        if (screen < guideScreens.length) {
-            guideScreens[screen].setVisibility(View.VISIBLE);
-
-            // Aplicando animaciones según la pantalla en la que me encuentro
-            animateScreenElements(screen, activity);
-
-            // Aplicando la narracion de Elora según la pantalla en la que me encuentro con un retraso
-            // para esperar un poco la aparición de la hamburguesa...
-            new Handler().postDelayed(() -> {
-                ImageView eloraImageView = getEloraImageViewForScreen(guideScreens[screen], screen);
-                if (eloraImageView != null) {
-                    setupEloraAnimation(screen + 1, eloraImageView); // Llamamos al método con el número de pantalla
-                }            }, TIME_ANIMATIONS);
-        } else {
-            finishGuide();
-        }
-    }
-
-    private void animateScreenElements(int screen, Activity activity) {
-        // Animar hamburguesa para pantallas 1 a 4
-        if (screen >= 1 && screen <= 4) {
-            View hamburguesa = guideScreens[screen].findViewById(R.id.hamburguesa);
-            startFadeInAnimation(hamburguesa, activity);
-        }
-
-        // Animar linearLayoutFadeIn para pantallas 1 y 5
-        if (screen == 0 || screen == 4) {
-            int screenId = SCREEN_IDS[screen];
-            View linearLayoutFadeIn = guideScreens[screen].findViewById(screenId);
-            startFadeInAnimation(linearLayoutFadeIn, activity);
-            SoundManager.playSound(activity, R.raw.portal);
-        }
-    }
-
-    private void startFadeInAnimation(View view, Activity activity) {
-        if (view != null) {
-            Animation fadeInAnimation = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
-            view.startAnimation(fadeInAnimation);
-        }
-    }
-
-    public void nextScreen() {
-        guideScreens[currentScreen].setVisibility(View.GONE);
-        currentScreen++;
-
-        // Gestiono el cambio de fragment desde aquí según la pantalla de la guia en la que me encuentre
-        // Si estoy en la pantalla 2 cambia al fragmentWorld
-        // Si estoy en la pantalla 3 cambia al fragmentCollectibles
-        // Mientras tanto, sigo donde esté
-        if (currentScreen == 2) {
-            navController.navigate(R.id.action_navigation_characters_to_navigation_worlds);
-        } else if (currentScreen == 3) {
-            navController.navigate(R.id.action_navigation_worlds_to_navigation_collectibles);
-        }
-        // Muestra la pantalla de la guia
-        showScreen(currentScreen);
-    }
-
-    public void cancelGuide() {
-        deactivateScreens();
-        unlockDrawerLayout();
-        SoundManager.freeMemoryPlayer();
-        sharedPreferences.edit().putBoolean(SETTING_VIEW_GUIDE, false).apply();
-    }
-
-    public void finishGuide() {
-        deactivateScreens();
-        unlockDrawerLayout();
-        SoundManager.freeMemoryPlayer();
-        sharedPreferences.edit().putBoolean(SETTING_VIEW_GUIDE, true).apply();
-    }
-
-
-    public void deactivateScreens() {
-        // Restaura el menu
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(false);
-            actionBar.setDisplayHomeAsUpEnabled(false);
-            actionBar.setDisplayShowHomeEnabled(false);
-        }
-
-        for (View screen: guideScreens) {
-            screen.setVisibility(View.GONE);
-        }
-    }
-
     private void lockDrawerLayout() {
         if (drawerLayout != null) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -290,40 +270,41 @@ public class UserGuideManager {
         }
     }
 
-    public void repeatGuide() {
+    private void repeatGuide() {
+        hideAllScreens();
         currentScreen = 0;
         showScreen(currentScreen);
     }
 
+    private void hideAllScreens() {
+        for (View screen : guideScreens) {
+            screen.clearAnimation();
+            screen.setVisibility(View.GONE);
+        }
+    }
+
     private ImageView getEloraImageViewForScreen(View screenView, int screen) {
         switch (screen) {
-            case 1:
-                return screenView.findViewById(R.id.elora_1);
-            case 2:
-                return screenView.findViewById(R.id.elora_2);
-            case 3:
-                return screenView.findViewById(R.id.elora_3);
-            case 4:
-                return screenView.findViewById(R.id.elora_4);
-            case 5:
-                return screenView.findViewById(R.id.elora_5);
-            case 6:
-                return screenView.findViewById(R.id.elora_6);
-            default:
-                return null;
+            case 0: return screenView.findViewById(R.id.elora_1);
+            case 1: return screenView.findViewById(R.id.elora_2);
+            case 2: return screenView.findViewById(R.id.elora_3);
+            case 3: return screenView.findViewById(R.id.elora_4);
+            case 4: return screenView.findViewById(R.id.elora_5);
+            case 5: return screenView.findViewById(R.id.elora_6);
+            default: return null;
         }
     }
 
     private int getAnimationResourceFromScreen(int screen) {
         switch (screen) {
-            case 1:
-            case 6:
+            case 0:
+            case 5:
                 return R.drawable.animation_elora_3;
+            case 1:
+            case 3:
+                return R.drawable.animation_elora_2;
             case 2:
             case 4:
-                return R.drawable.animation_elora_2;
-            case 3:
-            case 5:
                 return R.drawable.animation_elora_1;
             default:
                 return -1;  // Sin animacion
@@ -332,20 +313,13 @@ public class UserGuideManager {
 
     private int getSoundResourceFromScreen(int screen) {
         switch (screen) {
-            case 1:
-                return R.raw.sonido_elora_1;
-            case 2:
-                return R.raw.sonido_elora_2;
-            case 3:
-                return R.raw.sonido_elora_3;
-            case 4:
-                return R.raw.sonido_elora_4;
-            case 5:
-                return R.raw.sonido_elora_5;
-            case 6:
-                return R.raw.sonido_elora_6;
-            default:
-                return -1;  // Sin sonido
+            case 0: return R.raw.sonido_elora_1;
+            case 1: return R.raw.sonido_elora_2;
+            case 2: return R.raw.sonido_elora_3;
+            case 3: return R.raw.sonido_elora_4;
+            case 4: return R.raw.sonido_elora_5;
+            case 5: return R.raw.sonido_elora_6;
+            default: return -1;  // Sin sonido
         }
     }
 

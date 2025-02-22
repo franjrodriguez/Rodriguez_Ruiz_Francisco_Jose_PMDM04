@@ -7,7 +7,7 @@
     android:background="@drawable/rectangle_shape"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="">
+    android:visibility="gone">
 
     <ImageView
         android:id="@+id/elora_6"

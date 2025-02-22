@@ -7,7 +7,7 @@
     android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="">
+    android:visibility="gone">
 
     <!-- Add para ver video -->
     <android.widget.Button
@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="0.352" />
 
     <TextView
-        android:id="@+id/hamburguesa"
+        android:id="@+id/hamburguesa_4"
         android:visibility="invisible"
         style="@style/TextMessageGuide"
         android:layout_width="260dp"

@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:padding="16dp"
-    android:visibility="">
+    android:visibility="gone">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/first_page_guide_layout"
@@ -18,7 +18,7 @@
         android:clickable="true">
 
         <TextView
-            android:id="@+id/hamburguesa"
+            android:id="@+id/hamburguesa_5"
             android:visibility="invisible"
             style="@style/TextMessageGuide"
             android:layout_width="233dp"

@@ -8,10 +8,10 @@
     android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="">
+    android:visibility="gone">
 
     <TextView
-        android:id="@+id/hamburguesa"
+        android:id="@+id/hamburguesa_3"
         android:visibility="invisible"
         style="@style/TextMessageGuide"
         android:layout_width="227dp"

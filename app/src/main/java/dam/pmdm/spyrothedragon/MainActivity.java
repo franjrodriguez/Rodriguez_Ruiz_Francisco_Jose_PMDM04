@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = binding.drawerLayout;
         ActionBar actionBar = getSupportActionBar();
 
-        // Inicializar la UserGuideManager
-        View[] guideScreens = {
+        // Inicializar la UserGuideManager. Desde aquí se gestiona la totalidad de la Guia de Usuario.
+        View[] guideScreens = new View[] {
                 findViewById(R.id.guide_screen_1),
                 findViewById(R.id.guide_screen_2),
                 findViewById(R.id.guide_screen_3),
@@ -77,10 +77,9 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.guide_screen_6)
         };
         SharedPreferences sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
-        userGuideManager = new UserGuideManager(this, sharedPreferences, guideScreens, navController, drawerLayout, actionBar);
-
-        // Iniciar la guia (si es necesario... es la propia clase la que se encarga de gestionarlo.
-        userGuideManager.startGuide();
+        UserGuideManager guideManager = new UserGuideManager(this, sharedPreferences, guideScreens,
+                navController, drawerLayout, getSupportActionBar());
+        guideManager.startGuide();
     }
 
     private boolean selectedBottomMenu(@NonNull MenuItem menuItem) {

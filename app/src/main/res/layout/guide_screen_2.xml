@@ -7,7 +7,7 @@
     android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="">
+    android:visibility="gone">
 
     <android.widget.Button
         android:id="@+id/button_fire_dragon"
@@ -30,7 +30,7 @@
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/hamburguesa"
+        android:id="@+id/hamburguesa_2"
         android:visibility="invisible"
         style="@style/TextMessageGuide"
         android:layout_width="268dp"
