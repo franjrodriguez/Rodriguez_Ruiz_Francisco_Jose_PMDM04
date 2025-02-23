@@ -25,14 +25,14 @@
 
     <TextView
         android:id="@+id/hamburguesa_4"
-        android:visibility="invisible"
         style="@style/TextMessageGuide"
         android:layout_width="260dp"
         android:layout_height="128dp"
         android:layout_marginTop="528dp"
-        android:textAlignment="center"
         android:background="@drawable/speech_bubble"
         android:text="@string/mensaje_pantalla_cuatro"
+        android:textAlignment="center"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.894"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,10 +51,10 @@
 
     <android.widget.Button
         android:id="@+id/continue_button_4"
-        android:contentDescription="@string/continuar"
         android:layout_width="152dp"
         android:layout_height="64dp"
         android:background="@drawable/ripple_effect"
+        android:contentDescription="@string/continuar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -73,23 +73,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.889" />
-<RelativeLayout
-    android:id="@+id/layout_video_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black"
-    android:visibility="invisible"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" >
 
-    <VideoView
-        android:id="@+id/video_view"
+    <RelativeLayout
+        android:id="@+id/layout_video_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</RelativeLayout>
+        <VideoView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,11 +24,18 @@ public class SoundManager {
         }
     }
 
+    public static int getSoundDuration() {
+        int duration = -1;
+        if (mediaPlayer != null) {
+            duration = mediaPlayer.getDuration();
+        }
+        return duration;
+    }
+
     public static void freeMemoryPlayer() {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
     }
-
 }

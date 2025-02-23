@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="true">
-    <item android:drawable="@drawable/elora_3" android:duration="200" />
-    <item android:drawable="@drawable/elora_4" android:duration="200" />
-    <item android:drawable="@drawable/elora_5" android:duration="200" />
-    <item android:drawable="@drawable/elora_6" android:duration="200" />
-    <item android:drawable="@drawable/elora_7" android:duration="200" />
-    <item android:drawable="@drawable/elora_8" android:duration="200" />
-    <item android:drawable="@drawable/elora_9" android:duration="200" />
+    <item android:drawable="@drawable/elora_3" android:duration="300" />
+    <item android:drawable="@drawable/elora_4" android:duration="300" />
+    <item android:drawable="@drawable/elora_5" android:duration="300" />
+    <item android:drawable="@drawable/elora_6" android:duration="300" />
+    <item android:drawable="@drawable/elora_7" android:duration="300" />
+    <item android:drawable="@drawable/elora_8" android:duration="300" />
+    <item android:drawable="@drawable/elora_9" android:duration="300" />
+    <item android:drawable="@drawable/elora_10" android:duration="300" />
+    <item android:drawable="@drawable/elora_11" android:duration="300" />
+    <item android:drawable="@drawable/elora_12" android:duration="300" />
+    <item android:drawable="@drawable/elora_13" android:duration="300" />
+    <item android:drawable="@drawable/elora_14" android:duration="300" />
+    <item android:drawable="@drawable/elora_15" android:duration="300" />
+    <item android:drawable="@drawable/elora_16" android:duration="300" />
+    <item android:drawable="@drawable/elora_17" android:duration="300" />
+    <item android:drawable="@drawable/elora_18" android:duration="300" />
+    <item android:drawable="@drawable/elora_19" android:duration="300" />
 </animation-list>

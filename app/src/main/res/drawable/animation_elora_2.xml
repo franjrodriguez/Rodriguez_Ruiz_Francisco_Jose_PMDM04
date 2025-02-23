@@ -21,4 +21,12 @@
     <item android:drawable="@drawable/elora_27" android:duration="200" />
     <item android:drawable="@drawable/elora_28" android:duration="200" />
     <item android:drawable="@drawable/elora_29" android:duration="200" />
+    <item android:drawable="@drawable/elora_30" android:duration="200" />
+    <item android:drawable="@drawable/elora_31" android:duration="200" />
+    <item android:drawable="@drawable/elora_32" android:duration="200" />
+    <item android:drawable="@drawable/elora_33" android:duration="200" />
+    <item android:drawable="@drawable/elora_34" android:duration="200" />
+    <item android:drawable="@drawable/elora_35" android:duration="200" />
+    <item android:drawable="@drawable/elora_36" android:duration="200" />
+    <item android:drawable="@drawable/elora_37" android:duration="200" />
 </animation-list>

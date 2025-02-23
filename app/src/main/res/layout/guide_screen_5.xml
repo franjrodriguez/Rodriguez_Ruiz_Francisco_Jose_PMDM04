@@ -1,73 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/guide_screen_5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
     android:padding="16dp"
     android:visibility="gone">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/first_page_guide_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white_transparent"
-        android:clickable="true">
+    <TextView
+        android:id="@+id/hamburguesa_5"
+        style="@style/TextMessageGuide"
+        android:layout_width="233dp"
+        android:layout_height="146dp"
+        android:background="@drawable/speech_bubble"
+        android:text="@string/mensaje_pantalla_cinco"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.979"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.095" />
 
-        <TextView
-            android:id="@+id/hamburguesa_5"
-            android:visibility="invisible"
-            style="@style/TextMessageGuide"
-            android:layout_width="233dp"
-            android:layout_height="146dp"
-            android:textAlignment="center"
-            android:background="@drawable/speech_bubble"
-            android:text="@string/mensaje_pantalla_cinco"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.962"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.07" />
+    <android.widget.Button
+        android:id="@+id/exit_guide_5"
+        style="@style/ButtonExitGuide"
+        android:text="@string/saltar_guia"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.989"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.923" />
 
-        <android.widget.Button
-            android:id="@+id/exit_guide_5"
-            style="@style/ButtonExitGuide"
-            android:text="@string/saltar_guia"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.989"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.923" />
+    <android.widget.Button
+        android:id="@+id/continue_button_5"
+        android:layout_width="58dp"
+        android:layout_height="40dp"
+        android:background="@drawable/ripple_effect"
+        android:contentDescription="@string/continuar"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.003" />
 
-        <android.widget.Button
-            android:id="@+id/continue_button_5"
-            android:layout_width="58dp"
-            android:layout_height="40dp"
-            android:background="@drawable/ripple_effect"
-            android:elevation="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.99"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.003" />
+    <ImageView
+        android:id="@+id/elora_5"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:contentDescription="@string/elora"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.537"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hamburguesa_5"
+        app:layout_constraintVertical_bias="0.809" />
 
-        <ImageView
-            android:id="@+id/elora_5"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:contentDescription="@string/elora"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.537"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hamburguesa"
-            app:layout_constraintVertical_bias="0.809" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

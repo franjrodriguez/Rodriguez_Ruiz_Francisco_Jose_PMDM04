@@ -21,15 +21,34 @@ import androidx.navigation.ui.NavigationUI;
 import dam.pmdm.spyrothedragon.databinding.ActivityMainBinding;
 import dam.pmdm.spyrothedragon.guide.UserGuideManager;
 
+/**
+ * Actividad principal de la aplicación Spyro The Dragon.
+ * Gestiona la navegación entre fragmentos, la barra de acción, el menú inferior y la guía de usuario.
+ *
+ * @author Fco José Rodríguez Ruiz (Programa la parte de la interfaz de la guia de usuario)
+ * @version 1.0.0
+ */
 public class MainActivity extends AppCompatActivity {
+    /** Clave para almacenar el estado de visualización de la guía en las SharedPreferences. */
     private static final String SETTING_VIEW_GUIDE = "isViewedGuide";
 
+    /** Instancia de UserGuideManager para gestionar la guía de usuario. */
     private UserGuideManager userGuideManager;
+
+    /** Indica si la guía de usuario ha sido visualizada. (Por si acaso, aunqeu se gestiona desde ShPref se inicializa a false) */
     boolean isVisualizedUserGuide = false;
-    private DrawerLayout drawerLayout;
-    private ActivityMainBinding binding;
+
+    /** Controlador de navegación para gestionar los destinos de los fragmentos. */
     NavController navController = null;
 
+    private DrawerLayout drawerLayout;
+    private ActivityMainBinding binding;
+
+    /**
+     * Método llamado cuando se crea la actividad. Configura la interfaz, la navegación y la guía de usuario.
+     *
+     * @param savedInstanceState Permite almacenar el estado de guardado de la actividad, si existe.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +96,18 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.guide_screen_6)
         };
         SharedPreferences sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+
         UserGuideManager guideManager = new UserGuideManager(this, sharedPreferences, guideScreens,
                 navController, drawerLayout, getSupportActionBar());
         guideManager.startGuide();
     }
 
+    /**
+     * Infla el menú de opciones en la barra de acción.
+     *
+     * @param menu El menú a inflar.
+     * @return true si el menú se infló correctamente.
+     */
     private boolean selectedBottomMenu(@NonNull MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.nav_characters)
             navController.navigate(R.id.navigation_characters);
@@ -100,6 +126,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Maneja la selección de elementos en el menú de opciones.
+     *
+     * @param item El elemento del menú seleccionado.
+     * @return true si la selección fue manejada, false para delegar al comportamiento predeterminado.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Gestiona el clic en el ítem de información
@@ -113,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Muestra un diálogo con información sobre la aplicación.
+     */
     private void showInfoDialog() {
         // Crear un diálogo de información
         new AlertDialog.Builder(this)
