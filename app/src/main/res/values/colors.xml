@@ -10,9 +10,22 @@
     <color name="white_transparent">#00ffffff</color>
     <color name="text_color_primary">#FFD700</color>
     <color name="text_color_secondary">#FFFFFF</color>
+
+
     <color name="ripple_color">#90ff7f50</color>
     <color name="rectangle_transparent">#F09c35ba</color>
     <color name="rectangle_transparent_stroke">#9c35ba</color>
-    <color name="speech_bubble_transparent">#80c55e97</color>
+    <color name="speech_bubble_transparent">#70c55e97</color>
     <color name="speech_bubble_transparent_stroke">#c55e97</color>
+
+    <color name="spyro_purple">#6b3fa0</color>
+    <color name="spyro_purple_transparent">#506b3fa0</color>
+    <color name="spyro_yellow">#FFD700</color>
+    <color name="spyro_yellow_transparent">#50FFD700</color>
+    <color name="spyro_yellow_semi_transparent">#80FFD700</color>
+    <color name="spyro_blue">#87CEEB</color>
+    <color name="spyro_blue_transparent">#5087CEEB</color>
+    <color name="spyro_semi_transparent">#80FFFFFF</color>
+    <color name="spyro_green">#4CAF50</color>
+    <color name="spyro_green_transparent">#504CAF50</color>
 </resources>

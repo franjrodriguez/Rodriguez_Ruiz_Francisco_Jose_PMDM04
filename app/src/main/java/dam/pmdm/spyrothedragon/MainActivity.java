@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -29,11 +30,11 @@ import dam.pmdm.spyrothedragon.guide.UserGuideManager;
  * @version 1.0.0
  */
 public class MainActivity extends AppCompatActivity {
+    /** Instancia de UserGuideManager para gestionar la guía de usuario. */
+    public UserGuideManager guideManager;
+
     /** Clave para almacenar el estado de visualización de la guía en las SharedPreferences. */
     private static final String SETTING_VIEW_GUIDE = "isViewedGuide";
-
-    /** Instancia de UserGuideManager para gestionar la guía de usuario. */
-    private UserGuideManager userGuideManager;
 
     /** Indica si la guía de usuario ha sido visualizada. (Por si acaso, aunqeu se gestiona desde ShPref se inicializa a false) */
     boolean isVisualizedUserGuide = false;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     /** Controlador de navegación para gestionar los destinos de los fragmentos. */
     NavController navController = null;
 
-    private DrawerLayout drawerLayout;
+    private ConstraintLayout constraintLayout;
     private ActivityMainBinding binding;
 
     /**
@@ -82,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
 *   de la Guía de Usuario. Tan solo cargo lo que necesito (las pantallas de la guia
 *   y le cedo el control a UserGuideManager que gestiona cualquier aspecto de la misma.
  */
-        // Obtener la referencia al drawerLayout de la mainactivity
-        drawerLayout = binding.drawerLayout;
+        // Obtener la referencia al Layout principal de la mainactivity
+        constraintLayout = binding.mainLayout;
         ActionBar actionBar = getSupportActionBar();
 
         // Inicializar la UserGuideManager. Desde aquí se gestiona la totalidad de la Guia de Usuario.
@@ -97,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
         };
         SharedPreferences sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
 
-        UserGuideManager guideManager = new UserGuideManager(this, sharedPreferences, guideScreens,
-                navController, drawerLayout, getSupportActionBar());
+        guideManager = new UserGuideManager(this, sharedPreferences, guideScreens,
+                navController, constraintLayout, getSupportActionBar());
         guideManager.startGuide();
     }
 
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             showInfoDialog();  // Muestra el diálogo
             return true;
         } else if (item.getItemId() == R.id.action_set_guide) {
-            userGuideManager.setGuideVisualized(false);      // Desactiva el estado de visualización de la guia para poder verla nuevamente.
+            guideManager.setGuideVisualized(false);      // Desactiva el estado de visualización de la guia para poder verla nuevamente.
             Toast.makeText(this, "Se ha restaurado la opción para poder visualizar la guia", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);

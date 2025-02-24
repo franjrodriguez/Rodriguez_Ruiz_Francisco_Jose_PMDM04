@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 
@@ -74,7 +75,7 @@ public class UserGuideManager {
      */
     public UserGuideManager(Activity activity, SharedPreferences sharedPreferences,
                             View[] guideScreens, NavController navController,
-                            DrawerLayout drawerLayout, ActionBar actionBar) {
+                            ConstraintLayout drawerLayout, ActionBar actionBar) {
         this.activity = activity;
         this.sharedPreferences = sharedPreferences;
         this.guideScreens = guideScreens;

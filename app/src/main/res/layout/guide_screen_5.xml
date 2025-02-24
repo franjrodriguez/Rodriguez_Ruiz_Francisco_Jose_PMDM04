@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/guide_screen_5"
     android:layout_width="match_parent"
@@ -8,59 +9,91 @@
     android:clickable="true"
     android:focusable="true"
     android:padding="16dp"
-    android:visibility="gone">
+    android:visibility="invisible">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/hamburguesa_5"
         style="@style/TextMessageGuide"
-        android:layout_width="233dp"
-        android:layout_height="146dp"
-        android:background="@drawable/speech_bubble"
-        android:text="@string/mensaje_pantalla_cinco"
-        android:textAlignment="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spyro_speech_bubble"
+        android:maxWidth="300dp"
+        android:padding="6dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.979"
+        app:layout_constraintHorizontal_bias="0.784"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.095" />
+        app:layout_constraintVertical_bias="0.258">
+
+        <TextView
+            android:id="@+id/message_text"
+            style="@style/TextMessageGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:maxWidth="300dp"
+            android:text="@string/mensaje_pantalla_cinco"
+            app:layout_constraintEnd_toStartOf="@id/exit_guide_5"
+            app:layout_constraintHorizontal_bias="0.075"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/exit_guide_5"
+            style="@style/ButtonExitGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Salir de la guía"
+            android:src="@drawable/baseline_exit_to_app_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Botón Previo -->
+        <Button
+            android:id="@+id/button_prev_5"
+            style="@style/ButtonPrev"
+            android:layout_width="88dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:text="< Previa"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message_text" />
+
+        <!-- Botón Siguiente -->
+        <Button
+            android:id="@+id/continue_button_5"
+            style="@style/ButtonNext"
+            android:layout_marginTop="5dp"
+            android:text="Siguiente"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message_text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <android.widget.Button
-        android:id="@+id/exit_guide_5"
-        style="@style/ButtonExitGuide"
-        android:text="@string/saltar_guia"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.989"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.923" />
-
-    <android.widget.Button
-        android:id="@+id/continue_button_5"
-        android:layout_width="58dp"
-        android:layout_height="40dp"
+        android:id="@+id/bookmark_button_5"
+        android:layout_width="149dp"
+        android:layout_height="64dp"
         android:background="@drawable/ripple_effect"
-        android:contentDescription="@string/continuar"
-        android:elevation="8dp"
+        android:contentDescription="@string/enfocar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.003" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/elora_5"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:contentDescription="@string/elora"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/hamburguesa_5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.537"
+        app:layout_constraintHorizontal_bias="0.458"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hamburguesa_5"
-        app:layout_constraintVertical_bias="0.809" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,4 +37,5 @@
     <string name="recuerda">Recuerda…</string>
     <string name="continuar">Continuar</string>
     <string name="fire">Lanza fuego</string>
+    <string name="enfocar">Indicar donde pulsar</string>
 </resources>

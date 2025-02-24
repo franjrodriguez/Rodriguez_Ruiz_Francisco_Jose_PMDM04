@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/guide_screen_4"
     android:layout_width="match_parent"
@@ -7,11 +8,11 @@
     android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="gone">
+    android:visibility="invisible">
 
     <!-- Add para ver video -->
     <android.widget.Button
-        android:id="@+id/button_fire_dragon"
+        android:id="@+id/button_play_video"
         android:layout_width="181dp"
         android:layout_height="150dp"
         android:background="@color/white_transparent"
@@ -23,44 +24,65 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.352" />
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/hamburguesa_4"
-        style="@style/TextMessageGuide"
-        android:layout_width="260dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="528dp"
-        android:background="@drawable/speech_bubble"
-        android:text="@string/mensaje_pantalla_cuatro"
-        android:textAlignment="center"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.894"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.widget.Button
-        android:id="@+id/exit_guide_4"
-        style="@style/ButtonExitGuide"
-        android:text="@string/saltar_guia"
+        style="@style/TextMessageGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spyro_speech_bubble"
+        android:maxWidth="300dp"
+        android:padding="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.716">
 
-    <android.widget.Button
-        android:id="@+id/continue_button_4"
-        android:layout_width="152dp"
-        android:layout_height="64dp"
-        android:background="@drawable/ripple_effect"
-        android:contentDescription="@string/continuar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        <TextView
+            android:id="@+id/message_text"
+            style="@style/TextMessageGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:maxWidth="300dp"
+            android:text="@string/mensaje_pantalla_cuatro"
+            app:layout_constraintEnd_toStartOf="@id/exit_guide_4"
+            app:layout_constraintHorizontal_bias="0.075"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/exit_guide_4"
+            style="@style/ButtonExitGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Salir de la guía"
+            android:src="@drawable/baseline_exit_to_app_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Botón Previo -->
+        <Button
+            android:id="@+id/button_prev_4"
+            style="@style/ButtonPrev"
+            android:layout_width="88dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:text="< Previa"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message_text" />
+
+        <!-- Botón Siguiente -->
+        <Button
+            android:id="@+id/continue_button_4"
+            style="@style/ButtonNext"
+            android:layout_marginTop="5dp"
+            android:text="Siguiente"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message_text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/elora_4"
@@ -74,7 +96,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.889" />
 
-    <RelativeLayout
+    <android.widget.Button
+        android:id="@+id/bookmark_button_4"
+        android:layout_width="149dp"
+        android:layout_height="64dp"
+        android:background="@drawable/ripple_effect"
+        android:contentDescription="@string/enfocar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <FrameLayout
         android:id="@+id/layout_video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -90,6 +125,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

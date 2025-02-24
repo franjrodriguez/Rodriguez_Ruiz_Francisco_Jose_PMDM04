@@ -1,31 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/guide_screen_3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="gone">
+    android:visibility="invisible">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/hamburguesa_3"
         android:visibility="invisible"
         style="@style/TextMessageGuide"
-        android:layout_width="227dp"
-        android:layout_height="112dp"
-        android:elevation="10dp"
-        android:background="@drawable/speech_bubble"
-        android:text="@string/mensaje_pantalla_tres"
-        android:textAlignment="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spyro_speech_bubble"
+        android:maxWidth="300dp"
+        android:padding="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.733"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.686" />
+        app:layout_constraintVertical_bias="0.716">
+
+        <TextView
+            android:id="@+id/message_text"
+            style="@style/TextMessageGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:maxWidth="300dp"
+            android:text="@string/mensaje_pantalla_tres"
+            app:layout_constraintEnd_toStartOf="@id/exit_guide_3"
+            app:layout_constraintHorizontal_bias="0.075"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/exit_guide_3"
+            style="@style/ButtonExitGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Salir de la guía"
+            android:src="@drawable/baseline_exit_to_app_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Botón Previo -->
+        <Button
+            android:id="@+id/button_prev_3"
+            style="@style/ButtonPrev"
+            android:layout_width="88dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:text="< Previa"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message_text" />
+
+        <!-- Botón Siguiente -->
+        <Button
+            android:id="@+id/continue_button_3"
+            style="@style/ButtonNext"
+            android:layout_marginTop="5dp"
+            android:text="Siguiente"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message_text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <android.widget.Button
+        android:id="@+id/bookmark_button_3"
+        android:layout_width="149dp"
+        android:layout_height="64dp"
+        android:background="@drawable/ripple_effect"
+        android:contentDescription="@string/enfocar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/elora_3"
@@ -38,28 +93,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.91" />
-
-    <android.widget.Button
-        android:id="@+id/exit_guide_3"
-        style="@style/ButtonExitGuide"
-        android:text="@string/saltar_guia"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.99"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.004" />
-
-    <android.widget.Button
-        android:id="@+id/continue_button_3"
-        android:layout_width="149dp"
-        android:layout_height="64dp"
-        android:background="@drawable/ripple_effect"
-        android:contentDescription="@string/continuar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.998" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

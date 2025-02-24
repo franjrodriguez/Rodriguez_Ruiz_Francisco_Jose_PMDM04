@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/guide_screen_6"
     android:layout_width="match_parent"
@@ -7,7 +8,7 @@
     android:background="@drawable/rectangle_shape"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="gone">
+    android:visibility="">
 
     <ImageView
         android:id="@+id/elora_6"
@@ -85,7 +86,7 @@
             <TextView
                 style="@style/TextBodyResumen"
                 android:layout_width="236dp"
-                android:layout_height="wrap_content"
+                android:layout_height="51dp"
                 android:text="@string/message_1_resume" />
 
             <ImageView
@@ -103,7 +104,7 @@
             <TextView
                 style="@style/TextBodyResumen"
                 android:layout_width="236dp"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:text="@string/message_2_resume" />
 
             <ImageView
@@ -121,11 +122,11 @@
             <TextView
                 style="@style/TextBodyResumen"
                 android:layout_width="236dp"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:text="@string/message_3_resume" />
 
             <ImageView
-                android:layout_width="70dp"
+                android:layout_width="109dp"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/boton_coleccionables"
                 android:src="@drawable/boton_coleccionables" />
@@ -139,7 +140,7 @@
             <TextView
                 style="@style/TextBodyResumen"
                 android:layout_width="236dp"
-                android:layout_height="wrap_content"
+                android:layout_height="41dp"
                 android:text="@string/message_4_resume" />
 
             <ImageView
