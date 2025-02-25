@@ -124,4 +124,9 @@
         <item name="android:paddingHorizontal">8dp</item>
         <item name="android:minHeight">0dp</item>
     </style>
+
+    <style name="ThemeOverlay.SpyroTheDragon.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
 </resources>

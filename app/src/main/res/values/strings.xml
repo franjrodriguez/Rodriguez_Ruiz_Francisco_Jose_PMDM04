@@ -38,4 +38,16 @@
     <string name="continuar">Continuar</string>
     <string name="fire">Lanza fuego</string>
     <string name="enfocar">Indicar donde pulsar</string>
+    <string name="logo_spyro_image">Logo Spyro Image</string>
+    <string name="logo_spyro_text">Logo Spyro text</string>
+    <string name="gema">Gema</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="previa">Previa</string>
+    <string name="salir_de_la_guia">Salir de la guía</string>
+    <string name="exit_guide_title">Salir de la guía</string>
+    <string name="exit_guide_message">¿Estás seguro de que quieres salir de la guía?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

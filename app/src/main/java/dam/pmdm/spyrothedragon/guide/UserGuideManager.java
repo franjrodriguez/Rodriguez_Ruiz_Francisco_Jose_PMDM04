@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 
 import dam.pmdm.spyrothedragon.R;
@@ -42,10 +44,10 @@ public class UserGuideManager {
     private static final int TIME_ANIMATIONS = 2500;
 
     /** Tiempo de duración de los fade (apariciones) */
-    private static final long FADE_DURATION = 1000;
+    private static final long FADE_DURATION = 3000;
 
     /* Se concibe este tiempo de espera antes de que comience la animación de Elora para que la screen esté cargada */
-    private static final long ELORA_DELAY = 1000;
+    private static final long ELORA_DELAY = 3000;
 
     /* Array de vistas que almacena las pantallas de la guia. Se leen desde MainActivity, lo que permite añadir de forma dinámica las necesarias */
     private View[] guideScreens;
@@ -59,7 +61,7 @@ public class UserGuideManager {
     private SharedPreferences sharedPreferences;
     private final ActionBar actionBar;
     private NavController navController;
-    private DrawerLayout drawerLayout;
+    private ConstraintLayout constraintLayout;
     private MediaPlayer mediaPlayer;
     private Activity activity;
 
@@ -70,17 +72,17 @@ public class UserGuideManager {
      * @param sharedPreferences SharedPreferences para gestionar el estado de la guía: Vista o No Vista
      * @param guideScreens Array de vistas correspondientes a las pantallas de la guía.
      * @param navController Controlador de navegación para manejar destinos. Permitirá la carga de los fragments de forma automática desde aquí.
-     * @param drawerLayout Layout del contenedor de navegación.
+     * @param constraintLayout Layout del contenedor de navegación.
      * @param actionBar Barra de acción de la actividad.
      */
     public UserGuideManager(Activity activity, SharedPreferences sharedPreferences,
                             View[] guideScreens, NavController navController,
-                            ConstraintLayout drawerLayout, ActionBar actionBar) {
+                            ConstraintLayout constraintLayout, ActionBar actionBar) {
         this.activity = activity;
         this.sharedPreferences = sharedPreferences;
         this.guideScreens = guideScreens;
         this.navController = navController;
-        this.drawerLayout = drawerLayout;
+        this.constraintLayout = constraintLayout;
         this.actionBar = actionBar;
 
         if (guideScreens[0] == null) {
@@ -116,8 +118,26 @@ public class UserGuideManager {
         boolean isViewed = sharedPreferences.getBoolean(SETTING_VIEW_GUIDE, false);
         Log.i(TAG, "startGuide -> isViewed is " + isViewed);
         if (!isViewed) {
-            toLockUI(true);
+           // toLockUI(true);
+            viewUserGuide(true);
             showScreen(currentScreen);
+        }
+    }
+
+    private void viewUserGuide(boolean toOpen) {
+        FrameLayout guideLayout = constraintLayout.findViewById(R.id.interactive_guide_layout);
+        Log.i(TAG, "viewUserGuide -> guideLayout: " + guideLayout);
+
+        if (guideLayout == null) {
+            Log.i(TAG, "viewUserGuide -> guideLayout es null");
+            return;
+        }
+        if (toOpen) {
+            guideLayout.setVisibility(View.VISIBLE);
+            Log.i(TAG, "viewUserGuide -> la guideLayout ha quedado visible. Deberia poder verse");
+        } else {
+            guideLayout.setVisibility(View.GONE);
+            Log.i(TAG, "viewUserGuide -> la guideLayout ha quedado oculta -- bajo las sombras de la tiniebla --");
         }
     }
 
@@ -143,7 +163,7 @@ public class UserGuideManager {
      * @see Log
      */
     private void showScreen(int screenIndex) {
-        if (screenIndex < guideScreens.length) {
+        if (screenIndex < guideScreens.length && screenIndex >= 0) {
             View screenView = guideScreens[screenIndex];
             Log.i(TAG, "showScreen -> screen: " + screenIndex + ", screenView: " + screenView);
 
@@ -152,30 +172,33 @@ public class UserGuideManager {
                 return;
             }
 
-            // Cargamos las pantallas con fadeIn
-            screenView.setAlpha(0f);
-            screenView.setVisibility(View.VISIBLE);
-            Log.i(TAG, "showScreen -> Definida screen visible: " + screenIndex);
+            // Cargamos las pantallas 1 y 6 con fadeIn (las restantes creo que no tiene sentido ya que es mas
+            // relevante los desplazamientos de los fragments
+            if (screenIndex == 0 || screenIndex == 5) {
+               // screenView.setAlpha(0f);
+                Log.i(TAG, "showScreen -> Definida screen visible: " + screenIndex);
 
-            Animation fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
-            if (fadeIn == null) {
-                Log.i(TAG, "showScreen -> Ha fallado la carga de la animación fadeIN");
+                Animation fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
+                if (fadeIn == null) {
+                    Log.e(TAG, "showScreen -> Ha fallado la carga de la animación fadeIN");
+                }
+                fadeIn.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        Log.d(TAG, "showScreen -> FadeIn ha comenzado para la screen " + screenIndex);
+                    }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        Log.d(TAG, "showScreen -> FadeIn finalizada para la screen " + screenIndex);
+                        screenView.setAlpha(1f); // Asegurar opacidad final
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+                screenView.startAnimation(fadeIn);
+            } else {
+                screenView.setVisibility(View.VISIBLE); // Para el resto de pantallas.
             }
-            fadeIn.setDuration(FADE_DURATION);
-            fadeIn.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    Log.d(TAG, "showScreen -> FadeIn ha comenzado para la screen " + screenIndex);
-                }
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    Log.d(TAG, "showScreen -> FadeIn finalizada para la screen " + screenIndex);
-                    screenView.setAlpha(1f); // Asegurar opacidad final
-                }
-                @Override
-                public void onAnimationRepeat(Animation animation) {}
-            });
-            screenView.startAnimation(fadeIn);
 
             // Aplicando animaciones según la pantalla en la que me encuentro
             animateScreenElements(screenIndex);
@@ -238,18 +261,25 @@ public class UserGuideManager {
             if (i < 5) { // Pantallas 1 a 5
                 int continueButtonId = activity.getResources().getIdentifier(
                         "continue_button_" + (i + 1), "id", activity.getPackageName());
-                int exitButtonId = activity.getResources().getIdentifier(
-                        "exit_guide_" + (i + 1), "id", activity.getPackageName());
-
                 Button continueButton = screen.findViewById(continueButtonId);
                 if (continueButton != null) {
                     continueButton.setOnClickListener(v -> nextScreen());
                 }
 
-                Button exitButton = screen.findViewById(exitButtonId);
-                if (exitButton != null) {
-                    exitButton.setOnClickListener(v -> endGuide(false));
+                int previousButtonId = activity.getResources().getIdentifier(
+                        "button_prev_" + (i + 1), "id", activity.getPackageName());
+                Button previousButton = screen.findViewById(previousButtonId);
+                if (previousButton != null) {
+                    previousButton.setOnClickListener(v -> nextScreen());
                 }
+
+                int exitButtonId = activity.getResources().getIdentifier(
+                        "exit_guide_" + (i + 1), "id", activity.getPackageName());
+                View exitButton = screen.findViewById(exitButtonId);
+                if (exitButton != null) {
+                    exitButton.setOnClickListener(v -> showExitConfirmationDialog(false));
+                }
+
             } else { // Pantalla 6 -> button_close_guide y button_comenzar
                 Button closeButton = screen.findViewById(R.id.button_close_guide_6);
                 if (closeButton != null) {
@@ -265,12 +295,37 @@ public class UserGuideManager {
     }
 
     /**
+     * Muestra un diálogo de confirmación para salir de la guía, dependiendo de si el usuario ha completado todas las pantallas.
+     * Si el usuario ha visto toda la guía (isSeen es true), la guía se finaliza directamente sin mostrar un diálogo.
+     * Si el usuario no ha completado la guía (isSeen es false), se muestra un diálogo preguntando si desea salir,
+     * con opciones para confirmar (Sí) o cancelar (No).
+     *
+     * @param isSeen Indica si el usuario ha visto todas las pantallas de la guía. Si es true, no se muestra el diálogo
+     *               y la guía se finaliza inmediatamente; si es false, se muestra el diálogo de confirmación.
+     */
+    private void showExitConfirmationDialog(boolean isSeen) {
+        if (isSeen) {
+            // Si ha visto toda la guía, salir directamente sin diálogo
+            endGuide(true);
+        } else {
+            // Mostrar diálogo de confirmación
+            new AlertDialog.Builder(activity) // Usar 'activity' como contexto
+                    .setTitle(R.string.exit_guide_title)
+                    .setMessage(R.string.exit_guide_message)
+                    .setPositiveButton(R.string.yes, (dialog, which) -> endGuide(false))
+                    .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
+                    .setCancelable(false)
+                    .show();
+        }
+    }
+
+    /**
      * Anima los elementos de la pantalla de la guía según el número de pantalla proporcionado.
      *
      * Este método realiza las siguientes acciones para las pantallas 2 a 5 (índices 1 a 4):
      * 1. Anima el elemento "hamburguesa" (identificado dinámicamente por el nombre "hamburguesa_" + (screen + 1))
      *    utilizando una animación de desvanecimiento (fade-in) cargada desde el recurso {@code R.anim.fade_in}.
-     * 2. Anima el botón "continue_button" (identificado dinámicamente por el nombre "continue_button_" + (screen + 1))
+     * 2. Anima el botón "bookmark_button" (identificado dinámicamente por el nombre "bookmark_button_" + (screen + 1))
      *    utilizando una animación de pulso cargada desde el recurso {@code R.anim.pulse}.
      *
      * @param screenIndex El número de la pantalla actual (índice basado en 0). Solo se animan elementos para las pantallas 2 a 5.
@@ -285,23 +340,23 @@ public class UserGuideManager {
             int hamburguesaId = activity.getResources().getIdentifier(
                     "hamburguesa_" + (screenIndex + 1), "id", activity.getPackageName());
             View hamburguesa = guideScreens[screenIndex].findViewById(hamburguesaId);
+
             if (hamburguesa != null) {
-                hamburguesa.setAlpha(0f);
-                //hamburguesa.setVisibility(View.VISIBLE);
-                Log.i(TAG, "animateScreenElements -> hamburguesa se hace visible para screen " + screenIndex);
+                Log.i(TAG, "animateScreenElement -> visionando hamburguesa: " + hamburguesaId);
                 Animation fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
                 fadeIn.setDuration(FADE_DURATION);
+                hamburguesa.setAnimation(fadeIn);
             } else {
-                Log.i(TAG, "animateScreenElements -> hamburguesa es nulo para screen " + screenIndex);
+                Log.e(TAG, "animateScreenElements -> hamburguesa es nulo para screen " + screenIndex);
             }
 
-            // Animar el continue_button de las pantallas 2 a 5 con pulse
-            int continueButtonId = activity.getResources().getIdentifier(
-                    "continue_button_" + (screenIndex + 1), "id", activity.getPackageName());
-            Button continueButton = guideScreens[screenIndex].findViewById(continueButtonId);
-            if (continueButton != null) {
+            // Animar el bookmark_button de las pantallas 2 a 5 con pulse
+            int bookmarkButtonId = activity.getResources().getIdentifier(
+                    "bookmark_button_" + (screenIndex + 1), "id", activity.getPackageName());
+            Button bookmarkButton = guideScreens[screenIndex].findViewById(bookmarkButtonId);
+            if (bookmarkButton != null) {
                 Animation pulse = AnimationUtils.loadAnimation(activity, R.anim.pulse);
-                continueButton.startAnimation(pulse);
+                bookmarkButton.startAnimation(pulse);
             }
         }
     }
@@ -343,10 +398,33 @@ public class UserGuideManager {
         showScreen(currentScreen);
     }
 
+    public void prevScreen() {
+        guideScreens[currentScreen].setVisibility(View.GONE);
+        currentScreen--;
+
+        if (currentScreen >= 0) {
+            // Navegacion de fragment entre las pantallas 2 y 3 unicamente
+            if (currentScreen == 3) {
+                navController.navigate(R.id.action_navigation_characters_to_navigation_worlds);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> showScreen(currentScreen), 300);
+            } else if (currentScreen == 2) {
+                navController.navigate(R.id.action_navigation_worlds_to_navigation_collectibles);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> showScreen(currentScreen), 300);
+            }
+            // Muestra la pantalla de la guia
+            showScreen(currentScreen);
+        }
+    }
+
     /**
      * Finaliza la guía del usuario y realiza las operaciones necesarias para limpiar y guardar el estado.
+     * Para proceder, se lleva a cabo la solicitud al usuario para cancelar la guía usando una pantalla de alerta
      *
-     * Este método realiza las siguientes acciones:
+     * OBSEVACIÓN: Unicamente se solicita confirmación para salir de la guía en el caso de que se halla
+     *              pulsado el botón de "salir" desde alguna pantalla que no sea la última de la guia,
+     *              ya que se sobreentiende que en este caso ha llegado al final y no tiene sentido la petición.
+     *
+     * Este método realiza las siguientes acciones (Si la petición del usuario ha sido Avandonar la Guía):
      * 1. Oculta todas las pantallas de la guía llamando a {@link #hideAllScreens()}.
      * 2. Desbloquea la interfaz de usuario (UI) llamando a {@link #toLockUI(boolean)} con el valor {@code false}.
      * 3. Libera la memoria utilizada por el reproductor de sonidos llamando a {@link SoundManager#freeMemoryPlayer()}.
@@ -364,9 +442,10 @@ public class UserGuideManager {
      */
     public void endGuide(boolean isSeen) {
         hideAllScreens();
-        toLockUI(false);
+        // toLockUI(false);
         SoundManager.freeMemoryPlayer();
         setGuideVisualized(isSeen);
+        viewUserGuide(false);
     }
 
     /**
@@ -394,18 +473,51 @@ public class UserGuideManager {
         int animationRes = getAnimationResourceFromScreen(screen);
         int soundRes = getSoundResourceFromScreen(screen);
 
+        // Número de veces que quieres que se repita la animación
+        int repeatCount = 3; // Ajustamos este valor según necesidad de ajustarnos a la longitud del audio (va a ser aproximado)
+
+        // Variable para la duración de la animación, inicializada por defecto
+        int animationDuration = 0;
+
         // Reproducir el sonido
         if (soundRes != -1) {
             SoundManager.playSound(activity, soundRes);
+        }
 
-            // Obtengo la duración del sonido, para adaptar el tiempo de reproduccion de la animación
-            int soundDuration = SoundManager.getSoundDuration();
+        // Configurar la animación
+        if (animationRes != -1) {
+            AnimationDrawable animation = (AnimationDrawable) activity.getResources().getDrawable(animationRes);
+            eloraImageView.setImageDrawable(animation);
 
-            // Configurar la animación
-            if (animationRes != -1) {
-                AnimationDrawable animation = (AnimationDrawable) activity.getResources().getDrawable(animationRes);
-                eloraImageView.setImageDrawable(animation);
-                animation.start();
+            // Calcular la duración total de una ronda de la animación
+            for (int i = 0; i < animation.getNumberOfFrames(); i++) {
+                animationDuration += animation.getDuration(i);
+            }
+
+            // Hacer animationDuration final para que sea capturada por el Runnable
+            final int finalAnimationDuration = animationDuration;
+
+            // Reproducir la animación el número de veces deseado
+            animation.start();
+
+            // Usar un Handler con Looper.getMainLooper()
+            final Handler handler = new Handler(Looper.getMainLooper());
+            Runnable repeatRunnable = new Runnable() {
+                int currentRepeat = 0;
+
+                @Override
+                public void run() {
+                    if (currentRepeat < repeatCount - 1) { // -1 porque ya se reproduce una vez al inicio
+                        animation.stop(); // Detener la animación actual
+                        animation.start(); // Reiniciarla
+                        currentRepeat++;
+                        handler.postDelayed(this, finalAnimationDuration);
+                    }
+                }
+            };
+            // Iniciar las repeticiones después de la primera ronda (solo si hay duración)
+            if (finalAnimationDuration > 0) {
+                handler.postDelayed(repeatRunnable, finalAnimationDuration);
             }
         }
     }
@@ -436,14 +548,8 @@ public class UserGuideManager {
                 DragonFireView dragonFireView = guideScreen.findViewById(R.id.dragonFireView);
                 if (dragonFireView != null) {
                     dragonFireView.setVisibility(View.VISIBLE);
-                    dragonFireView.launchFire();
+                    dragonFireView.launchFlames();
                     SoundManager.playSound(v.getContext(), R.raw.roar);
-
-                    // Detener la animacion despues de 2 segundos
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        dragonFireView.stopFire();
-                        dragonFireView.setVisibility(View.INVISIBLE);
-                    }, TIME_ANIMATIONS);
                 }
                 return true;    // Esto es para indicar que el evento fue manejado
             });
@@ -464,24 +570,44 @@ public class UserGuideManager {
      * @see VideoManager
      * @see VideoManager#playVideo(Context, int)
      */
-    private void setupVideoButton(View guideScreen) {
+    private void setupVideoButton(View guideScreen, FragmentActivity activityFragment) {
         Button buttonFireDragon = guideScreen.findViewById(R.id.button_fire_dragon);
         VideoView videoView = guideScreen.findViewById(R.id.video_view);
         VideoManager videoManager = new VideoManager(videoView);
+        FrameLayout layoutVideoView = guideScreen.findViewById(R.id.layout_video_view);
 
         if (buttonFireDragon != null) {
             buttonFireDragon.setOnClickListener(v -> {
                 buttonClickCount++;
-
                 // Si se ha pulsado 4 veces, reproducir el video
                 if (buttonClickCount == 4) {
-                    videoManager.playVideo(v.getContext(), R.raw.spyrothedragon); // Reemplaza con tu video
+                    // Agregar el Fragment al contenedor
+                    activityFragment.getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new VideoFragment())
+                            .commit();
+
                     buttonClickCount = 0; // Reiniciar el contador
                 }
             });
         }
     }
 
+    /**
+     * Configura la animación de tipo PULSE para un botón. Inicialmente la idea es para el botón que
+     * señala al usuario donde debe pulsar, pero podría usarse para cualquiera.
+     *
+     * Este método realiza las siguientes acciones:
+     * 1. Limpia cualquier animación previa asociada al botón.
+     * 2. Carga una animación de tipo "pulsar" desde los recursos de la aplicación.
+     * 3. Inicia la animación en el botón.
+     *
+     * @param button El botón al que se le aplicará la animación y el comportamiento de clic.
+     *
+     * @see AnimationUtils#loadAnimation(Context, int)
+     * @see Button#clearAnimation()
+     * @see Button#startAnimation(Animation)
+     */
     private void setupContinueButtonAnimation(Button button) {
         // Primero limpiamos cualquier animación previa
         button.clearAnimation();
@@ -491,14 +617,6 @@ public class UserGuideManager {
 
         // Iniciamos la animación
         button.startAnimation(pulseAnimation);
-
-        // Detenemos la animación cuando se hace clic
-        // ... y lanzamos la siguiente pantalla
-        button.setOnClickListener(v -> {
-            SoundManager.playSound(v.getContext(), R.raw.menu);
-            button.clearAnimation();
-            nextScreen();
-        });
     }
 
     /**
@@ -516,26 +634,6 @@ public class UserGuideManager {
         sharedPreferences.edit().putBoolean(SETTING_VIEW_GUIDE, isVisualized).apply();
     }
 
-    /**
-     * Bloquea o desbloquea la interfaz de usuario (BottomNavigation y Layout).
-     *
-     * @param toLock Indica si el DrawerLayout debe bloquearse o desbloquearse.
-     *               - {@code true}: Bloquea el DrawerLayout en su estado cerrado.
-     *               - {@code false}: Desbloquea el DrawerLayout.
-     *
-     * @see DrawerLayout#setDrawerLockMode(int)
-     * @see DrawerLayout#LOCK_MODE_LOCKED_CLOSED
-     * @see DrawerLayout#LOCK_MODE_UNLOCKED
-     */
-    public void toLockUI(boolean toLock) {
-        if (drawerLayout != null) {
-            if (toLock) {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            } else {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            }
-        }
-    }
 
     private void repeatGuide() {
         hideAllScreens();
@@ -543,6 +641,16 @@ public class UserGuideManager {
         showScreen(currentScreen);
     }
 
+    /**
+     * Oculta todas las pantallas de la guía, deteniendo cualquier animación en curso y estableciendo su visibilidad a GONE.
+     *
+     * Este método recorre una lista de vistas (`guideScreens`) y realiza las siguientes acciones para cada una:
+     * 1. Detiene cualquier animación asociada a la vista.
+     * 2. Establece la visibilidad de la vista a `View.GONE`, lo que la oculta y no reserva espacio en el diseño.
+     *
+     * @see View#clearAnimation()
+     * @see View#setVisibility(int)
+     */
     private void hideAllScreens() {
         for (View screen : guideScreens) {
             screen.clearAnimation();
@@ -579,6 +687,22 @@ public class UserGuideManager {
             case 2: return R.id.continue_button_3;
             case 3: return R.id.continue_button_4;
             case 4: return R.id.continue_button_5;
+            default: return -1;
+        }
+    }
+
+    /**
+     * Obtiene el ID del botón "BookMark" según el índice de la pantalla.
+     *
+     * @param screenIndex Índice de la pantalla.
+     * @return ID del recurso del botón "BookMark".
+     */
+    private int getBookMarkButtonId(int screenIndex) {
+        switch (screenIndex) {
+            case 1: return R.id.bookmark_button_2;
+            case 2: return R.id.bookmark_button_3;
+            case 3: return R.id.bookmark_button_4;
+            case 4: return R.id.bookmark_button_5;
             default: return -1;
         }
     }

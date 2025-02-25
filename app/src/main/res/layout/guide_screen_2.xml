@@ -8,7 +8,7 @@
     android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="invisible">
+    android:visibility="gone">
 
     <android.widget.Button
         android:id="@+id/button_fire_dragon"
@@ -37,8 +37,35 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.123" />
 
+    <android.widget.Button
+        android:id="@+id/bookmark_button_2"
+        android:layout_width="149dp"
+        android:layout_height="64dp"
+        android:background="@drawable/ripple_effect"
+        android:contentDescription="@string/enfocar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/elora_2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:contentDescription="@string/elora"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.907" />
+
+    <!-- LAYOUT PARA LA HAMBURGUESA Y RESTO DE BOTONES -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/hamburguesa_2"
+        android:elevation="10dp"
         android:visibility="invisible"
         style="@style/TextMessageGuide"
         android:layout_width="wrap_content"
@@ -71,7 +98,7 @@
             style="@style/ButtonExitGuide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Salir de la guía"
+            android:contentDescription="@string/salir_de_la_guia"
             android:src="@drawable/baseline_exit_to_app_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -83,7 +110,7 @@
             android:layout_width="88dp"
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
-            android:text="< Previa"
+            android:text="@string/previa"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/message_text" />
 
@@ -92,34 +119,9 @@
             android:id="@+id/continue_button_2"
             style="@style/ButtonNext"
             android:layout_marginTop="5dp"
-            android:text="Siguiente"
+            android:text="@string/siguiente"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/message_text" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <android.widget.Button
-        android:id="@+id/bookmark_button_2"
-        android:layout_width="149dp"
-        android:layout_height="64dp"
-        android:background="@drawable/ripple_effect"
-        android:contentDescription="@string/enfocar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <ImageView
-        android:id="@+id/elora_2"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:contentDescription="@string/elora"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.907" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

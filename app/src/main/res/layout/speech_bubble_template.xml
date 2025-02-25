@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/baseline_exit_to_app_24"
-        android:contentDescription="Salir de la guía"
+        android:contentDescription="@string/saltar_guia"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -40,7 +40,7 @@
         style="@style/ButtonPrev"
         android:layout_width="88dp"
         android:layout_height="35dp"
-        android:text="< Previa"
+        android:text="@string/previa"
         app:layout_constraintTop_toBottomOf="@id/message_text"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="5dp" />
@@ -49,7 +49,7 @@
     <Button
         android:id="@+id/button_next_2"
         style="@style/ButtonNext"
-        android:text="Siguiente"
+        android:text="@string/siguiente"
         app:layout_constraintTop_toBottomOf="@id/message_text"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="5dp" />

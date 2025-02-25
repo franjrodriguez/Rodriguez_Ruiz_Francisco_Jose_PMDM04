@@ -1,29 +1,29 @@
 package dam.pmdm.spyrothedragon.guide;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import dam.pmdm.spyrothedragon.R;
 
 public class DragonFireView extends View {
 
-    private List<FlameParticle> flameParticles;
-    private Paint flamePaint;
-    private ValueAnimator flameAnimator;
-    private Random random;
-
-    public DragonFireView(Context context) {
-        super(context);
-        init();
-    }
+    private Bitmap spriteSheet;
+    private int frameWidth;
+    private int frameHeight;
+    private int frameCount;
+    private int currentFrame;
+    private Paint paint;
+    private Handler handler;
+    private Runnable runnable;
+    private int rows = 4; // Número de filas en el sprite sheet
+    private int cols = 4; // Número de columnas en el sprite sheet
+    private boolean isAnimating = false;
 
     public DragonFireView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -31,86 +31,42 @@ public class DragonFireView extends View {
     }
 
     private void init() {
-        flameParticles = new ArrayList<>();
-        flamePaint = new Paint();
-        flamePaint.setColor(Color.RED);
-        flamePaint.setStyle(Paint.Style.FILL);
-        random = new Random();
-
-        // Configurar el animador para actualizar las partículas
-        flameAnimator = ValueAnimator.ofFloat(0, 1);
-        flameAnimator.setDuration(1000);
-        flameAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        flameAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        spriteSheet = BitmapFactory.decodeResource(getResources(), R.drawable.flame_of_dragon);
+        frameWidth = spriteSheet.getWidth() / cols;
+        frameHeight = spriteSheet.getHeight() / rows;
+        frameCount = cols * rows;
+        currentFrame = 0;
+        paint = new Paint();
+        handler = new Handler();
+        runnable = new Runnable() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                updateFlameParticles();
-                invalidate(); // Redibujar la vista
+            public void run() {
+                if (isAnimating) {
+                    invalidate();
+                }
             }
-        });
+        };
     }
 
-    public void launchFire() {
-        // Reiniciar las partículas
-        flameParticles.clear();
-        for (int i = 0; i < 100; i++) {
-            flameParticles.add(new FlameParticle());
-        }
-
-        // Iniciar la animación
-        flameAnimator.start();
+    public void launchFlames() {
+        isAnimating = true;
+        handler.post(runnable);
     }
 
-    public void stopFire() {
-        if (flameAnimator != null && flameAnimator.isRunning()) {
-            flameAnimator.cancel(); // Detener la animación
-        }
-    }
-
-    private void updateFlameParticles() {
-        for (FlameParticle particle : flameParticles) {
-            particle.update();
-        }
+    public void stopAnimation() {
+        isAnimating = false;
+        handler.removeCallbacks(runnable);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        // Dibujar las partículas de llama
-        for (FlameParticle particle : flameParticles) {
-            canvas.drawCircle(particle.position.x, particle.position.y, particle.radius, flamePaint);
-        }
-    }
-
-    private class FlameParticle {
-        PointF position;
-        float radius;
-        float speed;
-        float angle;
-
-        FlameParticle() {
-            radius = random.nextFloat() * 10 + 5; // Tamaño aleatorio
-            speed = random.nextFloat() * 10 + 5; // Velocidad aleatoria
-            angle = random.nextFloat() * 360; // Ángulo aleatorio
-
-            // Posición inicial en la boca del dragón (ajusta según sea necesario)
-            position = new PointF(getWidth() / 2, getHeight() / 2);
-        }
-
-        void update() {
-            // Mover la partícula según el ángulo y la velocidad
-            position.x += Math.cos(Math.toRadians(angle)) * speed;
-            position.y += Math.sin(Math.toRadians(angle)) * speed;
-
-            // Reducir el tamaño de la partícula para simular que se desvanece
-            radius *= 0.95;
-
-            // Si la partícula es muy pequeña, reiniciarla
-            if (radius < 1) {
-                radius = random.nextFloat() * 10 + 5;
-                position.set(getWidth() / 2, getHeight() / 2);
-            }
-        }
+        if (!isAnimating) return;
+        int srcX = (currentFrame % cols) * frameWidth;
+        int srcY = (currentFrame / cols) * frameHeight;
+        Bitmap frame = Bitmap.createBitmap(spriteSheet, srcX, srcY, frameWidth, frameHeight);
+        canvas.drawBitmap(frame, 0, 0, paint);
+        currentFrame = (currentFrame + 1) % frameCount;
+        handler.postDelayed(runnable, 100); // Actualizar cada 100 ms
     }
 }

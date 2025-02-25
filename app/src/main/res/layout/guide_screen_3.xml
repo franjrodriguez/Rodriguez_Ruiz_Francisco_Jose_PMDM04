@@ -8,7 +8,7 @@
     android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="invisible">
+    android:visibility="gone">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/hamburguesa_3"
@@ -44,7 +44,7 @@
             style="@style/ButtonExitGuide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Salir de la guía"
+            android:contentDescription="@string/salir_de_la_guia"
             android:src="@drawable/baseline_exit_to_app_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -56,7 +56,7 @@
             android:layout_width="88dp"
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
-            android:text="< Previa"
+            android:text="@string/previa"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/message_text" />
 
@@ -65,7 +65,7 @@
             android:id="@+id/continue_button_3"
             style="@style/ButtonNext"
             android:layout_marginTop="5dp"
-            android:text="Siguiente"
+            android:text="@string/siguiente"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/message_text" />
     </androidx.constraintlayout.widget.ConstraintLayout>
