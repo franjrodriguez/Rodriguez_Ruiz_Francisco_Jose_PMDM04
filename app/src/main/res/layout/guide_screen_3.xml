@@ -52,6 +52,7 @@
         <!-- Botón Previo -->
         <Button
             android:id="@+id/button_prev_3"
+            android:visibility="gone"
             style="@style/ButtonPrev"
             android:layout_width="88dp"
             android:layout_height="35dp"

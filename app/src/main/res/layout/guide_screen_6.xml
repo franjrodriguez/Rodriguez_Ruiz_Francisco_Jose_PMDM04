@@ -8,7 +8,7 @@
     android:background="@drawable/rectangle_shape"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="invisible">
+    android:visibility="gone">
 
     <ImageView
         android:id="@+id/elora_6"
@@ -180,6 +180,7 @@
 
     <Button
         android:id="@+id/button_comenzar_6"
+        android:visibility="gone"
         style="@style/ButtonRepeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

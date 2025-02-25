@@ -33,6 +33,14 @@ public class VideoFragment extends Fragment {
         // Reproducir el video
         videoView.start();
 
+        // Escuchar cuando el video termine
+        videoView.setOnCompletionListener(mp -> {
+            // Ocultar el contenedor del Fragment
+            if (container != null) {
+                container.setVisibility(View.GONE);
+            }
+        });
+
         return view;
     }
 

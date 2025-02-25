@@ -17,6 +17,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_navigation_worlds_to_navigation_characters"
+            app:destination="@id/navigation_characters"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -37,5 +44,13 @@
         android:id="@+id/navigation_collectibles"
         android:name="dam.pmdm.spyrothedragon.ui.CollectiblesFragment"
         android:label="@string/collectibles"
-        tools:layout="@layout/fragment_collectibles" />
+        tools:layout="@layout/fragment_collectibles" >
+        <action
+            android:id="@+id/action_navigation_collectibles_to_navigation_worlds"
+            app:destination="@id/navigation_worlds"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
 </navigation>

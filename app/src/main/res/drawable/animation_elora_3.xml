@@ -27,4 +27,5 @@
     <item android:drawable="@drawable/elora_54" android:duration="200" />
     <item android:drawable="@drawable/elora_55" android:duration="200" />
     <item android:drawable="@drawable/elora_56" android:duration="200" />
+    <item android:drawable="@drawable/elora_30" android:duration="200" />
 </animation-list>

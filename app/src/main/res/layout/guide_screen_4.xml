@@ -8,7 +8,7 @@
     android:background="@color/white_transparent"
     android:clickable="true"
     android:focusable="true"
-    android:visibility="gone">
+    android:visibility="">
 
     <!-- Add para ver video -->
     <android.widget.Button
@@ -26,19 +26,19 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/hamburguesa_4"
-        android:visibility="invisible"
         style="@style/TextMessageGuide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/spyro_speech_bubble"
         android:maxWidth="300dp"
         android:padding="6dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.855"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.716">
+        app:layout_constraintVertical_bias="0.76">
 
         <TextView
             android:id="@+id/message_text"
@@ -71,6 +71,7 @@
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
             android:text="@string/previa"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/message_text" />
 
@@ -91,10 +92,10 @@
         android:contentDescription="@string/elora"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.015"
+        app:layout_constraintHorizontal_bias="0.061"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.889" />
+        app:layout_constraintVertical_bias="0.912" />
 
     <android.widget.Button
         android:id="@+id/bookmark_button_4"
@@ -104,7 +105,7 @@
         android:contentDescription="@string/enfocar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
