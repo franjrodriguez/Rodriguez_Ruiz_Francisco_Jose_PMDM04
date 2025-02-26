@@ -15,7 +15,7 @@ public class FlameView extends View {
     private ArrayList<Particle> particles = new ArrayList<>();
     private Random random = new Random();
     private float mouthX = 250; // Posición X de la boca de Spyro
-    private float mouthY = 260; // Posición Y (ajusta según tu pantalla)
+    private float mouthY = 400; // Posición Y (ajusta según tu pantalla)
     private boolean isFiring = false; // Controla si las llamas están activas
 
     public FlameView(Context context, AttributeSet attrs) {

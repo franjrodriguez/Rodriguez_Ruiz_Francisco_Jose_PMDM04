@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -16,8 +15,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
@@ -60,7 +59,7 @@ public class UserGuideManager {
     private int currentScreen = 0;
 
     private SharedPreferences sharedPreferences;
-    private final ActionBar actionBar;
+    private final Toolbar toolbar;
     private NavController navController;
     private ConstraintLayout constraintLayout;
     private MediaPlayer mediaPlayer;
@@ -74,27 +73,27 @@ public class UserGuideManager {
      * @param guideScreens Array de vistas correspondientes a las pantallas de la guía.
      * @param navController Controlador de navegación para manejar destinos. Permitirá la carga de los fragments de forma automática desde aquí.
      * @param constraintLayout Layout del contenedor de navegación.
-     * @param actionBar Barra de acción de la actividad.
+     * @param toolbar Barra de acción de la actividad.
      */
     public UserGuideManager(FragmentActivity activity, SharedPreferences sharedPreferences,
                             View[] guideScreens, NavController navController,
-                            ConstraintLayout constraintLayout, ActionBar actionBar) {
+                            ConstraintLayout constraintLayout, Toolbar toolbar) {
         this.activity = activity;
         this.sharedPreferences = sharedPreferences;
         this.guideScreens = guideScreens;
         this.navController = navController;
         this.constraintLayout = constraintLayout;
-        this.actionBar = actionBar;
+        this.toolbar = toolbar;
 
         if (guideScreens[0] == null) {
             Log.i(TAG, "Constructor userguidemanager -> array de pantallas vacio");
         }
         //
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(false);
-            actionBar.setDisplayHomeAsUpEnabled(false);
-            actionBar.setDisplayShowHomeEnabled(false);
-        }
+//        if (toolbar != null) {
+//            toolbar.setHomeButtonEnabled(false);
+//            toolbar.setDisplayHomeAsUpEnabled(false);
+//            toolbar.setDisplayShowHomeEnabled(false);
+//        }
         // Inicializar los botones de toda la guia
         setupGuideButtons();
         currentScreen = 0;
@@ -134,6 +133,7 @@ public class UserGuideManager {
         }
         if (toOpen) {
             guideLayout.setVisibility(View.VISIBLE);
+            guideLayout.bringToFront();
             Log.i(TAG, "viewUserGuide -> la guideLayout ha quedado visible. Deberia poder verse");
         } else {
             guideLayout.setVisibility(View.GONE);
@@ -596,7 +596,7 @@ public class UserGuideManager {
     private void setupVideoButton(View guideScreen, Activity activity) {
         Button buttonPlayVideo = guideScreen.findViewById(R.id.button_play_video);
         final VideoView videoView = activity.findViewById(R.id.video_view);
-        VideoManager videoManager = new VideoManager(videoView);
+        VideoManager videoManager = new VideoManager(activity, videoView, toolbar);
         FrameLayout overlayVideo = activity.findViewById(R.id.overlay_video); // FrameLayout que cubre la pantalla
 
         if (buttonPlayVideo != null) {
@@ -611,7 +611,7 @@ public class UserGuideManager {
                     if (videoView != null && overlayVideo != null) {    // La capa visible la gestiona VideoManager
                         // Reproducir el video
                         Log.i(TAG, "Tengo videoView y overlayVideo asi que empiezo la pelicula...");
-                        videoManager.playVideo(activity, R.raw.video_of_spyrothedragon, overlayVideo);
+                        videoManager.playVideo(R.raw.video_of_spyrothedragon, overlayVideo);
                     } else {
                         Log.e(TAG, "setupVideoButton -> videoView: " + videoView);
                         Log.e(TAG, "setupVideoButton -> overlayVideo: " + overlayVideo);
