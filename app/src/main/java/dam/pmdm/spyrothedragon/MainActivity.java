@@ -3,17 +3,19 @@ package dam.pmdm.spyrothedragon;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -21,6 +23,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import dam.pmdm.spyrothedragon.databinding.ActivityMainBinding;
 import dam.pmdm.spyrothedragon.guide.UserGuideManager;
+import dam.pmdm.spyrothedragon.guide.VideoManager;
 
 /**
  * Actividad principal de la aplicación Spyro The Dragon.
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ConstraintLayout constraintLayout;
     private ActivityMainBinding binding;
+    private VideoManager videoManager;
 
     /**
      * Método llamado cuando se crea la actividad. Configura la interfaz, la navegación y la guía de usuario.
@@ -82,7 +86,19 @@ public class MainActivity extends AppCompatActivity {
 *   Aquí comienza el código de MainActivity relacionado con la visualización
 *   de la Guía de Usuario. Tan solo cargo lo que necesito (las pantallas de la guia
 *   y le cedo el control a UserGuideManager que gestiona cualquier aspecto de la misma.
+*   El video se gestiona desde VideoManager
+*   El audio se gestion desde SoundManager
+*   El canvas para la llama se gestiona en FlameView
  */
+
+        // Busco el VideoView
+        VideoView videoView = findViewById(R.id.video_view);
+        if (videoView == null) {
+            Log.e("MainActivity", "VideoView no encontrado en activity_main.xml");
+        } else {
+            videoManager = new VideoManager(videoView);
+        }
+
         // Obtener la referencia al Layout principal de la mainactivity
         constraintLayout = binding.mainLayout;
         ActionBar actionBar = getSupportActionBar();
@@ -101,6 +117,32 @@ public class MainActivity extends AppCompatActivity {
         guideManager = new UserGuideManager(this, sharedPreferences, guideScreens,
                 navController, constraintLayout, getSupportActionBar());
         guideManager.startGuide();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (videoManager != null) {
+            outState.putInt("video_position", videoManager.getCurrentPosition());
+            outState.putBoolean("video_playing", videoManager.isPlaying());
+            outState.putInt("video_res_id", videoManager.getCurrentVideoResId()); // Guardar el recurso
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (videoManager != null) {
+            int position = savedInstanceState.getInt("video_position");
+            boolean isPlaying = savedInstanceState.getBoolean("video_playing");
+            int videoResId = savedInstanceState.getInt("video_res_id");
+
+            // Pasar el FrameLayout y el contexto para restaurar completamente
+            FrameLayout overlay = findViewById(R.id.overlay_video);
+            if (videoResId != 0) {
+                videoManager.restoreVideoState(this, position, isPlaying, overlay);
+            }
+        }
     }
 
     /**

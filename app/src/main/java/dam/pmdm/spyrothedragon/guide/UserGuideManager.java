@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -118,7 +119,6 @@ public class UserGuideManager {
         boolean isViewed = sharedPreferences.getBoolean(SETTING_VIEW_GUIDE, false);
         Log.i(TAG, "startGuide -> isViewed is " + isViewed);
         if (!isViewed) {
-            actionBar.hide();
             viewUserGuide(true);
             showScreen(currentScreen);
         }
@@ -174,20 +174,16 @@ public class UserGuideManager {
 
             // Cargamos las pantallas 1 y 6 con fadeIn (las restantes creo que no tiene sentido ya que es mas
             // relevante los desplazamientos de los fragments
-            if (screenIndex == 0 || screenIndex == 5) {
-                screenView.setVisibility(View.VISIBLE);
-                Log.i(TAG, "showScreen -> Definida screen visible: " + screenIndex);
-
-                Animation fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
-                if (fadeIn == null) {
-                    Log.e(TAG, "showScreen -> Ha fallado la carga de la animación fadeIN");
-                }
-
-
-                screenView.startAnimation(fadeIn);
-                Log.i(TAG, "showScreen -> Visibilidad despues de fadeIN: " + screenView.getVisibility());
-            } else {
-                screenView.setVisibility(View.VISIBLE); // Para el resto de pantallas.
+            switch (screenIndex) {
+                case 0:     // Primera pantalla de la guia
+                    screenView.setVisibility(View.VISIBLE);
+                    Animation fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
+                    if (fadeIn == null) {
+                        Log.e(TAG, "showScreen -> Ha fallado la carga de la animación fadeIN");
+                    }
+                    break;
+                default:
+                    screenView.setVisibility(View.VISIBLE); // Para el resto de pantallas.
             }
 
             // Aplicando animaciones según la pantalla en la que me encuentro
@@ -246,10 +242,10 @@ public class UserGuideManager {
 
             // El caso de los Easter Eggs...
             switch (i) {
-                case 1:
+                case 1:     // guide_screen_2
                     setupFireButton(screen);
                     break;
-                case 4:
+                case 3:     // guide_screen_4
                     setupVideoButton(screen, this.activity);
                     break;
             }
@@ -292,7 +288,19 @@ public class UserGuideManager {
             } else { // Pantalla 6 -> button_close_guide y button_comenzar
                 Button closeButton = screen.findViewById(R.id.button_close_guide_6);
                 if (closeButton != null) {
-                    closeButton.setOnClickListener(v -> endGuide(true));
+                    // Detallo el proceso:
+                    //      1. Se queda a la escucha de que toquen el boton... Adios!!!
+                    //      2. Comienza el fadeOut que dura 3500
+                    //      3. Se crea un retraso de 3500 para que se lance el proceso en sí mismo de final de guia
+                    closeButton.setOnClickListener(v -> {
+                        Animation fadeOut = AnimationUtils.loadAnimation(activity, R.anim.fade_out);
+                        if (fadeOut == null) {
+                            Log.e(TAG, "showScreen -> Ha fallado la carga de la animación fadeOUT");
+                        }
+                        new Handler(Looper.getMainLooper()).postDelayed(()-> {
+                            endGuide(true);
+                        }, 3500);
+                    });
                 }
 
                 Button repeatButton = screen.findViewById(R.id.button_comenzar_6);
@@ -458,7 +466,6 @@ public class UserGuideManager {
         SoundManager.freeMemoryPlayer();
         setGuideVisualized(isSeen);
         viewUserGuide(false);
-        actionBar.show();
     }
 
     /**
@@ -540,14 +547,14 @@ public class UserGuideManager {
      * identificado por {@code R.id.button_fire_dragon}. Cuando el usuario mantiene presionado
      * el botón, se realiza lo siguiente:
      * 1. Se hace visible la vista {@code DragonFireView} (identificada por {@code R.id.dragonFireView}).
-     * 2. Se inicia la animación de fuego llamando al método {@link DragonFireView#launchFire()}.
+     * 2. Se inicia la animación de fuego llamando al método {@link FlameView#launchFire()}.
      * 3. Se reproduce un sonido de rugido utilizando {@link SoundManager#playSound(Context, int)}.
      * 4. Después de un tiempo definido por {@link #TIME_ANIMATIONS}, se detiene la animación
      *    y se oculta la vista {@code DragonFireView}.
      *
      * @param guideScreen La vista que contiene los elementos de la pantalla de la guía.
      *
-     * @see DragonFireView
+     * @see FlameView
      * @see SoundManager#playSound(Context, int)
      * @see Handler
      * @see Looper
@@ -556,11 +563,16 @@ public class UserGuideManager {
         Button buttonFireDragon = guideScreen.findViewById(R.id.button_fire_dragon);
         if (buttonFireDragon != null) {
             buttonFireDragon.setOnLongClickListener(v -> {
-                DragonFireView dragonFireView = guideScreen.findViewById(R.id.dragonFireView);
-                if (dragonFireView != null) {
-                    dragonFireView.setVisibility(View.VISIBLE);
-                    dragonFireView.launchFlames();
+                FlameView flameView = guideScreen.findViewById(R.id.flame_view);
+                if (flameView != null) {
+                    flameView.setVisibility(View.VISIBLE);
+                    flameView.startFiring();
                     SoundManager.playSound(v.getContext(), R.raw.roar);
+                    // Detener el fuego después de 3 segundos
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        flameView.stopFiring();
+                        flameView.setVisibility(View.GONE);
+                    }, 3000);
                 }
                 return true;    // Esto es para indicar que el evento fue manejado
             });
@@ -581,29 +593,29 @@ public class UserGuideManager {
      * @see VideoManager
      * @see VideoManager#playVideo(Context, int)
      */
-    private void setupVideoButton(View guideScreen, FragmentActivity activityFragment) {
+    private void setupVideoButton(View guideScreen, Activity activity) {
         Button buttonPlayVideo = guideScreen.findViewById(R.id.button_play_video);
-        VideoView videoView = guideScreen.findViewById(R.id.video_view);
+        final VideoView videoView = activity.findViewById(R.id.video_view);
         VideoManager videoManager = new VideoManager(videoView);
-        FrameLayout fragmentContainer = activityFragment.findViewById(R.id.fragment_container);
+        FrameLayout overlayVideo = activity.findViewById(R.id.overlay_video); // FrameLayout que cubre la pantalla
 
         if (buttonPlayVideo != null) {
             buttonPlayVideo.setOnClickListener(v -> {
+                SoundManager.playSound(activity, R.raw.crow);
                 buttonClickCount++;
+
                 // Si se ha pulsado 4 veces, reproducir el video
                 if (buttonClickCount == 4) {
-                    // Hacer visible el contenedor del Fragment
-                    if (fragmentContainer != null) {
-                        fragmentContainer.setVisibility(View.VISIBLE);
-                    }
-
-                    // Agregar el Fragment al contenedor
-                    activityFragment.getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, new VideoFragment())
-                            .commit();
-
                     buttonClickCount = 0; // Reiniciar el contador
+
+                    if (videoView != null && overlayVideo != null) {    // La capa visible la gestiona VideoManager
+                        // Reproducir el video
+                        Log.i(TAG, "Tengo videoView y overlayVideo asi que empiezo la pelicula...");
+                        videoManager.playVideo(activity, R.raw.video_of_spyrothedragon, overlayVideo);
+                    } else {
+                        Log.e(TAG, "setupVideoButton -> videoView: " + videoView);
+                        Log.e(TAG, "setupVideoButton -> overlayVideo: " + overlayVideo);
+                    }
                 }
             });
         }

@@ -23,19 +23,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.123" />
 
-    <!-- Add DragonFireView para dibujar las llamas -->
+    <!-- Si siguiente vista es para dibujar las llamas -->
 
-    <dam.pmdm.spyrothedragon.guide.DragonFireView
-        android:id="@+id/dragonFireView"
-        android:layout_width="181dp"
-        android:layout_height="150dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.004"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.123" />
+    <dam.pmdm.spyrothedragon.guide.FlameView
+        android:id="@+id/flame_view"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <android.widget.Button
         android:id="@+id/bookmark_button_2"
