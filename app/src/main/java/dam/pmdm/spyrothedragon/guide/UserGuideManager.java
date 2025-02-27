@@ -109,7 +109,7 @@ public class UserGuideManager {
      * - Bloquea la interfaz de usuario (UI) llamando a {@link #toLockUI(boolean)} con el valor {@code true}.
      * - Muestra la pantalla actual de la guía llamando a {@link #showScreen(int)}.
      *
-     * @see SharedPreferences#getBoolean(String, boolean) SharedPreferences#getBoolean(String, boolean)
+     * @see SharedPreferences#getBoolean(String, boolean) SharedPreferences#getBoolean(String, boolean)SharedPreferences#getBoolean(String, boolean)
      * @see #toLockUI(boolean) #toLockUI(boolean)
      * @see #showScreen(int) #showScreen(int)
      * @see Log
@@ -405,10 +405,10 @@ public class UserGuideManager {
      * 4. Para todos los casos, muestra la pantalla correspondiente llamando a {@link #showScreen(int)}. Esto
      * hace que se cargue la siguiente pantalla de la guia.
      *
-     * @see NavController#navigate(int) NavController#navigate(int)
+     * @see NavController#navigate(int) NavController#navigate(int)NavController#navigate(int)
      * @see Handler
      * @see Looper
-     * @see #showScreen(int) #showScreen(int)
+     * @see #showScreen(int) #showScreen(int)#showScreen(int)
      */
     public void nextScreen() {
         guideScreens[currentScreen].setVisibility(View.GONE);
@@ -440,10 +440,10 @@ public class UserGuideManager {
      * (NOTA: Este método no está completamente funcional de momento. No se usa, para lo que se han dejado
      * los objetos correspondientes - button prev_button - con atributo android:visibility="gone"
      *
-     * @see NavController#navigate(int) NavController#navigate(int)
+     * @see NavController#navigate(int) NavController#navigate(int)NavController#navigate(int)
      * @see Handler
      * @see Looper
-     * @see #showScreen(int) #showScreen(int)
+     * @see #showScreen(int) #showScreen(int)#showScreen(int)
      */
     public void prevScreen() {
         guideScreens[currentScreen].setVisibility(View.GONE);
@@ -479,10 +479,10 @@ public class UserGuideManager {
      * proporcionado en el parámetro {@code isSeen}.
      *
      * @param isSeen Indica si la guía ha sido completamente vista por el usuario.              - {@code true}: La guía ha sido vista completamente.              - {@code false}: La guía no ha sido vista completamente. Se reproduce nuevamente.
-     * @see #hideAllScreens() #hideAllScreens()
-     * @see SoundManager#freeMemoryPlayer() SoundManager#freeMemoryPlayer()
-     * @see #setGuideVisualized(boolean) #setGuideVisualized(boolean)
-     * @see #viewUserGuide(boolean) #viewUserGuide(boolean)
+     * @see #hideAllScreens() #hideAllScreens()#hideAllScreens()
+     * @see SoundManager#freeMemoryPlayer() SoundManager#freeMemoryPlayer()SoundManager#freeMemoryPlayer()
+     * @see #setGuideVisualized(boolean) #setGuideVisualized(boolean)#setGuideVisualized(boolean)
+     * @see #viewUserGuide(boolean) #viewUserGuide(boolean)#viewUserGuide(boolean)
      */
     public void endGuide(boolean isSeen) {
         hideAllScreens();
@@ -675,8 +675,8 @@ public class UserGuideManager {
      *
      * @param isVisualized Indica si la guía ha sido visualizada.                    - {@code true}: La guía ha sido visualizada.                    - {@code false}: La guía no ha sido visualizada.
      * @see SharedPreferences
-     * @see SharedPreferences.Editor#putBoolean(String, boolean) SharedPreferences.Editor#putBoolean(String, boolean)
-     * @see SharedPreferences.Editor#apply() SharedPreferences.Editor#apply()
+     * @see SharedPreferences.Editor#putBoolean(String, boolean) SharedPreferences.Editor#putBoolean(String, boolean)SharedPreferences.Editor#putBoolean(String, boolean)
+     * @see SharedPreferences.Editor#apply() SharedPreferences.Editor#apply()SharedPreferences.Editor#apply()
      */
     public void setGuideVisualized(boolean isVisualized) {
         sharedPreferences.edit().putBoolean(SETTING_VIEW_GUIDE, isVisualized).apply();
