@@ -1,4 +1,5 @@
-# README.md
+README.md
+
 ## Tarea Unidad 4 PMDM - Spyro The Dragon
 #### Autor: Francisco José Rodríguez Ruiz
 
@@ -13,14 +14,21 @@ Módulo FP DAM PMDM (Distancia)
 - **Capturas de pantalla** (opcional): Si lo deseas, agrega imágenes que muestren la interfaz o funcionalidades de la app.
 ***
 ### Introducción
-La app comienza mostrando una pantalla de logueo. Para ello hace uso de los servicios de Google Firebase Authentication. Una vez logueado el usuario, la app consume una API relacionada con el mundo Pokemon desde una ubicación web (https://pokeapi.co/api/v2), lo que se llama Pokédex. Cargará únicamente los 150 primeros Pokemons de la lista, mostrandolos en una de las opciones del menu ubicado en un BottomNavigation. 
-Por otra parte, lleva a cabo la lectura (en el caso de que existan) de los Pokemons capturados asociados al usuario logueado (lo que significa que cada usuario tendrá los suyos). Se puede consultar desde otra de las opciones del BottomNavigation menú.
-La tercera opción del menú consiste en una pantalla de ajustes en la que se podrán llevar a cabo algunas operaciones como:
-- Cambio de idioma (inglés / español)
-- Mostrar información sobre la app
-- Usar un switch para determinar si el usuario puede o no borrar los Pokemons capturados
-- Llevar a cabo el cierre de sesión, lo que provocará que se vuelva a solicitar el logueo del usuario
-- Se ha añadido la opción de resetear y dejar por defecto la configuración de los ajustes
+En este proyecto se trata de actualizar la app (que ha ya está creada) con una guía de usuario que explique como funciona la app. La idea radica en que actualmente aquellas app que consigan atraer la atención del usuario, son las que pueden tener futuro en un mercado competitivo.
+
+Esta guia interactiva propone (como objetivo):
+
+- Diseñar un entorno donde el usuario pueda aprender que aspectos son los más relevantes en esta app.
+
+Para ello, a través del uso de animaciones, sonidos, elementos gráficos, se propone enriquecer la experiencia del usuario.
+
+Con esto en mente:
+
+- Si el usuario, no ha visionado la guía comenzará de forma automática el lanzamiento de la misma. En otro caso (El booleano almacenado en las SharedPreferences lo dirá) directamente comenzará la app.
+- Desde ese momento, se hace cargo de la app, la guía de usuario, llevando a cabo, incluso, las funciones propias del usuario, como si este hiciera click sobre cada uno de los botones del menú inferior, se irá mostrando cada una de las pantallas de la app, sobreponiendo a cada una la información relacionada con la guía de usuario.
+- La guía comienza mostrando una pantalla en la que se da la bienvenida al usuario. Dado que se presupone que la app podría ser usada por niños que no saben leer, se ha decidido usar una narración para cada pantalla de la guía. 
+- En la misma, se permite acceder a Easter Egg en la segunda y cuarta pantalla. En la primera, presionando durante un tiempo sobre la imagen de Spyro, este lanzará una llama de fuego. En la segunda, haciendo cuatro clicks sobre la imagen del diamante, se podrá visionar un video sobre spyro.
+- Además de eso, se muestra al usuario información para cada pantalla.
 
 ##### La app se desarrolla utilizando el IDE Android Studio con la siguiente estructura:
 - IDE Android Studio
@@ -29,127 +37,95 @@ La tercera opción del menú consiste en una pantalla de ajustes en la que se po
   
 ***
 ### Características principales
-Describe las funcionalidades clave de la aplicación, como la autenticación, la Pokédex, la lista de Pokémon capturados y los ajustes
+Describe las funcionalidades clave de la aplicación.
 Las principales funcionalidades de la app son estas:
 
-1. **MyAplication**
-   * Se trata de una clase personalizada que extiende de **Application**. Permite gestionar configuraciones globales y el ciclo de vida de la app. En mi caso la he usado para llevar a cabo la Inicialización de Firebase, asegurando de este modo que los servicios estarán disponibles desde el principio. Así mismo almacena y recupera el **UID** del usuario logueado, de forma que se facilite la gestión en la base de datos.
-2. **Autenticación**
-   * Inicialmente se verifica si ya existe un usuario autenticado (puede ser si al salir de la app anteriormente, no cerró la sesión). Se procede (si no hay nadie logueado) con la autenticación usando **Firebase Authentication UI**. Se han activado los métodos correo electrónico y Google. Se ha creado una sencilla interfaz de usuario para mostrar el inicio de sesión al usuario, permitiendole escoger su método.
-   * Una vez el usuario ha llevado a cabo el intento de logueo, el resultado lógicamente puede ser de Éxito (se obtiene la **UID** del usuario y se redirige a 'MainActivity') o de Error (Mensaje de error y nos quedamos en la pantalla de logueo).
-3. **Pokédex**
-   * Se trata de una lista de 150 Pokemons almacenada en un ArrayList de un ViewModel (para que esté disponible en cualquier parte de la app) que se carga en el MainActivity en el momento de su creación (onCreate). El proceso se lleva a cabo en la función loadPokedexFromApi(). Esta es lanzada usando hilos, ya que debe finalizar antes de que se pueda ejecutar otra función que buscará los Pokemons capturados en la lista Pokedex para dejarlos marcados. Una vez cargada la ViewModel que gestiona y observa los datos del Pokédex, la gestión del recyclerView se lleva a cabo desde un fragment que permite mantener actualizada la información.
-   * El usuario puede interactuar con la lista, tocando cada Pokemon para capturarlo. Esto provoca una actualización de de la lista de forma automática, marcando a true el atributo isCapturated de la lista Pokédex y cambiando la vista del pokemon capturado.
-   * Finalmente hace otro consumo de la API para obtener todos los datos del Pokemon, que serán almacenados en la base de datos Firestore, asociandolos al usuario en curso.
-4. **Pokemon capturados**
-   * Iniciamos en la MainActivity la gestión de estos, justo en el momento en que procedemos (al igual que ocurría con la Pokedex) a leer los Pokemons capturados para este usuario (UID), pero en este caso los obtenemos leyendo la base de datos creada en Firestore.
-   * Se cargan en un ArrayList gestionado por un ViewModel que facilita que la lista esté disponible en toda la app. En el caso de que el usuario aún no tenga Pokemons capturados, la lista permanecerá vacia.
-   * Los Pokemons capturados se muestran desde otro fragment en una cardview que permite consultar de un vistazo sus datos.
-   * A nivel de interacción con el usuario, se permiten dos acciones:
-	   * Click sobre la tarjeta: carga un nuevo fragment (DetailPokemonFragment) en el cual se mostrarán todos los datos del Pokémon clicado.
-		* Desplazamiento hacia la izquierda de la tarjeta: permite el borrado del Pokémon capturado, lo que únicamente se permite si en los ajustes se ha consentido dicha operación. En tal caso, elimina el Pokemon del ViewModel correespondiente actualizando la información en pantalla, se borra de la base de datos y se actualiza la información en la ViewModel de la Pokédex para que aparezca como NO capturado.
-5. **Ajustes**
-   * Permiten modificar el comportamiento de la app en determinados puntos, además de provocar determinadas acciones. Se llevan a cabo haciendo uso de las SharedPreferences y se gestionan desde un fragment.
-   * Preferencias definidas:
-	   * Idioma: Se trata de una ListPreference con la que podemos seleccionar el idioma de la app (inglés o español). Para ello se definen arrays en strings.xml. Su valor por defecto es español (es).
-		* Eliminar Pokemons: Es de tipo SwitchPreferenceCompat y permite indicar si es posible o no eliminar pokemons que tenemos capturados. El valor por defecto es 'false'.
-		 * Acerca de: Es de tipo Preference y permite mostrar información sobre el desarrollador y la app. Dado que las SharedPreferences se crearon para almacenar una dualidad clave-valor y esta opción se limita a mostrar un Dialog con la información, para poder crearla aquí, se ha optado por almacenar el nombre del desarrollador como clave y su correspondiente valor, así como la versión de la app.
-		   * Cerrar sesión: También de tipo Preference y al igual que ocurre con Acerca de, se ha usado un valor booleano que indica que es posible cerrar esta (true) si bien no tiene de momento un uso definido si no es el solicitado en la tarea, mostrar un Dialog que permita decidir si se procede con el cierre de sesión.
-		   * Reiniciar Configuración: Se trata de un añadido que surgió como necesidad, ya que por error se crearon claves que posteriormente no han sido usadas, motivo por el que, para no dejar información innecesaria e inutil se procede con su eliminación por completo. Al arrancar la app, se hace una verificación de la existencia de las claves y en caso de no estar grabadas, se procede con los valores por defecto.
-***
+1. **Diseños XML**
+   
+   * Utilizando la clase Drawable, se muestra al usuario la información qeu requiere para el uso de la app.
+   
+2. **Pantallas de la guía**
+   
+   * A través de varias pantallas (mientra la app cambia de forma automática entre ellas) indicando  lo que el usuario va a ir encontrando en cada una de ellas.
+   * Además de esto, podrá encontrar Easter Eggs en dos de las pantallas.
+   * La pantalla principal da la bienvenida a la guía de usuario y tras pantallas mostradas durante 
+   
+3. **Easter Eggs**
+   
+   * En la pantalla de personajes, si el usuario presiona con un click mantenido la imagen de Spyro, se muestra una llama saliendo de la boca de Spyro.
+   * En la pantalla de coleccionables, si el usuario presiona cuatro veces sobre la gema, se mostrará un video sobre el juego de Spyro.
+   
+5. **Ajustes** (de forma implicita)
+   
+   * La app gestiona si el usuario ha visualizado previamente la guia de usuario. Para ello se hace uso de las SharedPreferences, almacenando el estado de la visualización de la guía (true si ya ha sido visualizada o false en el caso contrario).
+	
+	   ------
+	
+	   
+
 ### Tecnologías utilizadas
 Las principales tecnologías y librerías usadas en el proyecto se relacionan a continuación:
-* Firebase y Autenticación:
-  * Firebase BoM (Bill of Materials) versión 33.7.0
-  * Firebase Authentication 22.3.1
-  * FirebaseUI Auth 8.0.2
-  * Cloud Firestore 24.0.0 para base de datos
-* Networking y Procesamiento de Datos:
-  * Retrofit 2.9.0 para llamadas a API REST
-  * Gson Converter 2.9.0 para parsing JSON
-  * Picasso 2.8 para carga y gestión de imágenes
-* Componentes de UI Android:
-  * RecyclerView 1.3.2 para listas
-  * CardView 1.0.0 para diseño de tarjetas
-  * Material Design 1.12.0
-  * ConstraintLayout
-  * ViewBinding para manejo de vistas
-  * ChipGroup para crear objetos separados para cada uno de los tipos a los que pertenece un Pokemon
-* Navegación:
-  * Navigation Component 2.7.7 (navigation-ui y navigation-fragment)
-* AndroidX:
-  * SharedPreferences
-  * Activity
-  * Fragments
-  * Compose UI ViewBinding 1.7.6
-* Características adicionales habilitadas:
-  * ViewBinding para un manejo más seguro de las vistas
+* **Android SDK**:
+  - La aplicación está desarrollada utilizando el **Android Software Development Kit (SDK)**, que proporciona las herramientas y APIs necesarias para construir aplicaciones Android.
+* **Java**:
+  - El código de la aplicación está escrito en **Java**, que es uno de los lenguajes principales para el desarrollo de aplicaciones Android.
+* **XML**:
+  - Se utiliza **XML** para definir la interfaz de usuario (UI) en archivos de diseño como `activity_main.xml` y otros layouts. También se usa en el archivo `AndroidManifest.xml` para definir la configuración de la aplicación, como permisos, actividades y servicios.
+* **Navigation Component**:
+  - La aplicación utiliza el **Navigation Component** de Android Jetpack para gestionar la navegación entre fragmentos. Esto permite una navegación fluida y gestionada entre las diferentes pantallas de la aplicación.
+* **SharedPreferences**:
+  - Se utiliza **SharedPreferences** para almacenar y recuperar datos simples, como el estado de visualización de la guía de usuario (`isViewedGuide`).
+* **MediaPlayer**:
+  - Para la reproducción de sonidos, se utiliza la clase **MediaPlayer**. Esto permite reproducir efectos de sonido y narraciones en la guía de usuario.
+* **VideoView**:
+  - Para la reproducción de videos, se utiliza **VideoView**, que permite incrustar y reproducir videos en la aplicación.
+* **Canvas y Custom Views**:
+  - La aplicación utiliza **Canvas** para dibujar animaciones personalizadas, como las llamas de Spyro en la clase `FlameView`. Esto permite crear efectos visuales personalizados.
+* **Animaciones**:
+  - Se utilizan animaciones definidas en XML (como `fade_in`, `fade_out`, y `pulse`) para mejorar la experiencia del usuario. Estas animaciones se aplican a elementos de la interfaz de usuario.
+* **Toolbar y ActionBar**:
+  - La aplicación utiliza **Toolbar** y **ActionBar** para proporcionar una barra de navegación y opciones de menú en la parte superior de la pantalla.
+* **Fragmentos**:
+  - La aplicación está estructurada en **fragmentos**, que son componentes reutilizables que permiten una gestión modular de la interfaz de usuario. Los fragmentos se gestionan mediante el **NavController**.
+* **Handler y Looper**:
+  - Se utilizan **Handler** y **Looper** para gestionar tareas asíncronas y retrasos en la ejecución de código, como la aparición de animaciones después de un cierto tiempo.
+* **AlertDialog**:
+  - Se utiliza **AlertDialog** para mostrar diálogos de confirmación y mensajes al usuario, como el diálogo de salida de la guía.
+* **FrameLayout y ConstraintLayout**:
+  - Se utilizan **FrameLayout** y **ConstraintLayout** para organizar y posicionar los elementos de la interfaz de usuario de manera flexible.
 
 ***
 ### Instrucciones de uso
 * Pasos para clonar el repositorio (Desde Android Studio)
-	* Entramos en Android Studio IDE
-	* Si no tenemos ningún proyecto abierto, pinchamos sobre el botón [Clone Repository]
-	* En el caso de estar trabajando con algún proyecto vamos a **File > New > Projecto from Version Control**
-	* En la ventana que se abre, seleccionamos **Git** como Version Control
-	* Desde el navegador, debemos ir a l repositorio de GitHub que queremos clonar y hacemos click sobre el botón verde [Code].
-	* Copiamos la URL que se muestra.
-	* Pegamos dicha URL en el campo URL del Control de Versiones de Android.
-	* En el campo "Directory" le indicamos la carpeta en la que vamos a almacenar el proyecto clonado.
-	* Hacemos click en el boton [Clone]. Con estos pasos, deberías tener una copia del proyecto en tu equipo local.
-* Instalar dependencias necesarias para ejecutar la aplicación
-  Las dependencias son un conjunto de librerias que se deben añadir al archivo ***build.gradle.kts (:app)***
-  | Dependencia|Utilidad|
-  |--|--|
-  |com.google.gms.google-services|Archivo configuracion servicios Google|
-  |platform("com.google.firebase:firebase-bom:33.7.0|Firebase BoM|
-  |com.google.firebase:firebase-auth:22.3.1|Para Firebase Authentication|
-  |com.firebaseui:firebase-ui-auth:8.0.2|Para Firebase Authentication|
-  |com.google.firebase:firebase-firestore:24.0.0|Uso base datos Firestore|
-  |com.squareup.retrofit2:retrofit:2.9.0|Usar Retrofit|
-  |com.squareup.retrofit2:converter-gson:2.9.0|JSON Parsing|
-  |androidx.recyclerview:recyclerview:1.3.2|Manejo del recyclerView|
-  |androidx.cardview:cardview:1.0.0|Tarjetas para mostrar información en el recyclerView|
-  |androidx.compose.ui:ui-viewbinding:1.7.6|Permite un manejo de la UI más sencillo y efectivo|
-  |com.google.android.material:material:1.12.0|Componentes de diseño de Material Design aportada por Google|
-  |androidx.navigation:navigation-ui:2.7.7|Controlador de navegación|
-  |androidx.navigation:navigation-fragment:2.7.7|Navegación entre fragment|
-  |com.squareup.picasso:picasso:2.8|Gestión de las imégenes desde internet|
+  * Entramos en Android Studio IDE
+  * Si no tenemos ningún proyecto abierto, pinchamos sobre el botón [Clone Repository]
+  * En el caso de estar trabajando con algún proyecto vamos a **File > New > Projecto from Version Control**
+  * En la ventana que se abre, seleccionamos **Git** como Version Control
+  * Desde el navegador, debemos ir a l repositorio de GitHub que queremos clonar y hacemos click sobre el botón verde [Code].
+  * Copiamos la URL que se muestra.
+  * Pegamos dicha URL en el campo URL del Control de Versiones de Android.
+  * En el campo "Directory" le indicamos la carpeta en la que vamos a almacenar el proyecto clonado.
+  * Hacemos click en el boton [Clone]. Con estos pasos, deberías tener una copia del proyecto en tu equipo local.
+* En manifest.xml debemos añadir el siguiente código dentro de la opción activity:
 
-	En el archivo ***build.gradle.kts (:project)*** añadimos la siguiente linea de código:
-	`id("com.google.gms.google-services") version "4.4.2" apply false`
-	En el archivo ***build.gradle.kts (:app)*** añadimos las siguientes lineas de código:
-	- En plugins
-  `id("com.google.gms.google-services")`
-	- En dependencies
+  ```
+  android:configChanges="orientation|screenSize"
+  ```
+
+  Permite ayudar a la gestión del cambio de orientación del movil durante la reproducción del video, de forma que facilite al cambio de horizontalidad del mismo.
+
+* Instalar dependencias necesarias para ejecutar la aplicación
+  Las dependencias son un conjunto de librerias que se deben añadir al archivo ***build.gradle.kts (:app)
+
+  - En dependencies
+    - com.google.android.material:material:1.12.0: Componentes de diseño moderno de Google
+    - androidx.coordinatorlayout:coordinatorlayout:1.2.0: Contenedores para gestionar transiciones y desplazamientos.
+    - androidx.drawerlayout:drawerlayout:1.2.0: Permite el uso de un Navigation Drawer.
    ```    // Firebase BoM
-    implementation (platform("com.google.firebase:firebase-bom:33.8.0"))
+      implementation("com.google.android.material:material:1.12.0")
+      implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+      implementation("androidx.drawerlayout:drawerlayout:1.2.0")
   
-    // Firebase Auth
-    implementation ("com.google.firebase:firebase-auth:23.1.0")
-    implementation ("com.firebaseui:firebase-ui-auth:8.0.2")
-  
-    // Firestore
-    implementation ("com.google.firebase:firebase-firestore:25.1.1")
-  
-    // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-  
-    // JSON Parsing
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-  
-    // recyclerview
-    implementation("androidx.recyclerview:recyclerview:1.4.0")
-    implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.compose.ui:ui-viewbinding:1.7.6")
-    implementation("com.google.android.material:material:1.12.0")
-  
-    // NavigationController
-    implementation ("androidx.navigation:navigation-ui:2.8.5")
-    implementation ("androidx.navigation:navigation-fragment:2.8.5")
-  
-    // Gestion de las imagenes desde internet
-    implementation("com.squareup.picasso:picasso:2.71828") ```
 ***
 ### Conclusiones del desarrollador 
 Me he dado cuenta de que cualquier proyecto lo convierto en un reto de mejora tanto personal como profesional. Si Pokedex supuso un gran esfuerzo por el cambio en el modelo de paradigma que conlleva el desarrollo de app Android. Cuando comencé con Java, pasar de una programación lineal, modular a OOP ya fue un reto. Android ha supuesto el siguiente paso al unir OOP y Programación Orientada a Eventos. 
