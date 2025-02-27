@@ -22,6 +22,9 @@ import dam.pmdm.spyrothedragon.adapters.WorldsAdapter;
 import dam.pmdm.spyrothedragon.databinding.FragmentWorldsBinding;
 import dam.pmdm.spyrothedragon.models.World;
 
+/**
+ * The type Worlds fragment.
+ */
 public class WorldsFragment extends Fragment {
 
     private FragmentWorldsBinding binding;

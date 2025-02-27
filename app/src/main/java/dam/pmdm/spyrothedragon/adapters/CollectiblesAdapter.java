@@ -13,10 +13,18 @@ import java.util.List;
 import dam.pmdm.spyrothedragon.R;
 import dam.pmdm.spyrothedragon.models.Collectible;
 
+/**
+ * The type Collectibles adapter.
+ */
 public class CollectiblesAdapter extends RecyclerView.Adapter<CollectiblesAdapter.CollectiblesViewHolder> {
 
     private List<Collectible> list;
 
+    /**
+     * Instantiates a new Collectibles adapter.
+     *
+     * @param collectibleList the collectible list
+     */
     public CollectiblesAdapter(List<Collectible> collectibleList) {
         this.list = collectibleList;
     }
@@ -42,11 +50,25 @@ public class CollectiblesAdapter extends RecyclerView.Adapter<CollectiblesAdapte
         return list.size();
     }
 
+    /**
+     * The type Collectibles view holder.
+     */
     public static class CollectiblesViewHolder extends RecyclerView.ViewHolder {
 
+        /**
+         * The Name text view.
+         */
         TextView nameTextView;
+        /**
+         * The Image image view.
+         */
         ImageView imageImageView;
 
+        /**
+         * Instantiates a new Collectibles view holder.
+         *
+         * @param itemView the item view
+         */
         public CollectiblesViewHolder(View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.name);

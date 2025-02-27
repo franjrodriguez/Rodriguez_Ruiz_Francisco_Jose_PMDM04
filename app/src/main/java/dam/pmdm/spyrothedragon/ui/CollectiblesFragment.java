@@ -22,6 +22,9 @@ import dam.pmdm.spyrothedragon.adapters.CollectiblesAdapter;
 import dam.pmdm.spyrothedragon.databinding.FragmentCollectiblesBinding;
 import dam.pmdm.spyrothedragon.models.Collectible;
 
+/**
+ * The type Collectibles fragment.
+ */
 public class CollectiblesFragment extends Fragment {
 
     private FragmentCollectiblesBinding binding;

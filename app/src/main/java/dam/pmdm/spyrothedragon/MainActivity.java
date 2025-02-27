@@ -34,16 +34,22 @@ import dam.pmdm.spyrothedragon.guide.VideoManager;
  * @version 1.0.0
  */
 public class MainActivity extends AppCompatActivity {
-    /** Instancia de UserGuideManager para gestionar la guía de usuario. */
+    /**
+     * Instancia de UserGuideManager para gestionar la guía de usuario.
+     */
     public UserGuideManager guideManager;
 
     /** Clave para almacenar el estado de visualización de la guía en las SharedPreferences. */
     private static final String SETTING_VIEW_GUIDE = "isViewedGuide";
 
-    /** Indica si la guía de usuario ha sido visualizada. (Por si acaso, aunqeu se gestiona desde ShPref se inicializa a false) */
+    /**
+     * Indica si la guía de usuario ha sido visualizada. (Por si acaso, aunqeu se gestiona desde ShPref se inicializa a false)
+     */
     boolean isVisualizedUserGuide = false;
 
-    /** Controlador de navegación para gestionar los destinos de los fragmentos. */
+    /**
+     * Controlador de navegación para gestionar los destinos de los fragmentos.
+     */
     NavController navController = null;
 
     private ConstraintLayout constraintLayout;

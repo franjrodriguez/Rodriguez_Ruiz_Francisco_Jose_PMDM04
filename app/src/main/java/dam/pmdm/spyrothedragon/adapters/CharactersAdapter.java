@@ -13,10 +13,18 @@ import dam.pmdm.spyrothedragon.models.Character;
 
 import java.util.List;
 
+/**
+ * The type Characters adapter.
+ */
 public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.CharactersViewHolder> {
 
     private List<Character> list;
 
+    /**
+     * Instantiates a new Characters adapter.
+     *
+     * @param charactersList the characters list
+     */
     public CharactersAdapter(List<Character> charactersList) {
         this.list = charactersList;
     }
@@ -42,11 +50,25 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Ch
         return list.size();
     }
 
+    /**
+     * The type Characters view holder.
+     */
     public static class CharactersViewHolder extends RecyclerView.ViewHolder {
 
+        /**
+         * The Name text view.
+         */
         TextView nameTextView;
+        /**
+         * The Image image view.
+         */
         ImageView imageImageView;
 
+        /**
+         * Instantiates a new Characters view holder.
+         *
+         * @param itemView the item view
+         */
         public CharactersViewHolder(View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.name);

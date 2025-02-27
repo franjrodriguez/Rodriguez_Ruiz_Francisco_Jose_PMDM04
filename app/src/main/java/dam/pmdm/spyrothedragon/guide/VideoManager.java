@@ -146,10 +146,10 @@ public class VideoManager {
     /**
      * Restaura el estado del video, incluyendo la posición y el estado de reproducción.
      *
-     * @param context  El contexto de la aplicación.
-     * @param position La posición del video que se desea restaurar.
+     * @param context   El contexto de la aplicación.
+     * @param position  La posición del video que se desea restaurar.
      * @param isPlaying Indica si el video debe comenzar a reproducirse automáticamente.
-     * @param overlay  El {@link FrameLayout} que se utilizará como superposición durante la reproducción del video.
+     * @param overlay   El {@link FrameLayout} que se utilizará como superposición durante la reproducción del video.
      */
     public void restoreVideoState(Context context, int position, boolean isPlaying, FrameLayout overlay) {
         if (videoView != null && currentVideoResId != 0) {

@@ -46,8 +46,7 @@ public class SoundManager {
     /**
      * Obtiene la duración del sonido que se está reproduciendo actualmente.
      *
-     * @return La duración del sonido en milisegundos, o {@code -1} si no hay ningún sonido
-     *         reproduciéndose o si no se puede obtener la duración.
+     * @return La duración del sonido en milisegundos, o {@code -1} si no hay ningún sonido         reproduciéndose o si no se puede obtener la duración.
      */
     public static int getSoundDuration() {
         int duration = -1;

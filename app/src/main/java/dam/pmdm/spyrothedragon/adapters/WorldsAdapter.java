@@ -13,10 +13,18 @@ import java.util.List;
 import dam.pmdm.spyrothedragon.R;
 import dam.pmdm.spyrothedragon.models.World;
 
+/**
+ * The type Worlds adapter.
+ */
 public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldsViewHolder> {
 
     private List<World> list;
 
+    /**
+     * Instantiates a new Worlds adapter.
+     *
+     * @param worldsList the worlds list
+     */
     public WorldsAdapter(List<World> worldsList) {
         this.list = worldsList;
     }
@@ -42,11 +50,25 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldsView
         return list.size();
     }
 
+    /**
+     * The type Worlds view holder.
+     */
     public static class WorldsViewHolder extends RecyclerView.ViewHolder {
 
+        /**
+         * The Name text view.
+         */
         TextView nameTextView;
+        /**
+         * The Image image view.
+         */
         ImageView imageImageView;
 
+        /**
+         * Instantiates a new Worlds view holder.
+         *
+         * @param itemView the item view
+         */
         public WorldsViewHolder(View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.name);

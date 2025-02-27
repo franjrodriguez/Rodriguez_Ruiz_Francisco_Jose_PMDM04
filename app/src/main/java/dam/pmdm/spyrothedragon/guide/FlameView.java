@@ -47,9 +47,27 @@ public class FlameView extends View {
      * Cada partícula tiene una posición, tamaño, velocidad y vida útil.
      */
     private class Particle {
-        float x, y;
+        /**
+         * The X.
+         */
+        float x, /**
+         * The Y.
+         */
+        y;
+        /**
+         * The Size.
+         */
         float size;
-        float speedX, speedY;
+        /**
+         * The Speed x.
+         */
+        float speedX, /**
+         * The Speed y.
+         */
+        speedY;
+        /**
+         * The Life.
+         */
         float life;
 
         /**

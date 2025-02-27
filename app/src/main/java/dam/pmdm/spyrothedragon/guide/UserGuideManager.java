@@ -27,8 +27,8 @@ import dam.pmdm.spyrothedragon.R;
  * Clase que gestiona la guía de usuario de la aplicación Spyro The Dragon.
  * Controla la visualización secuencial de pantallas de guía con animaciones y navegación.
  * También se encarga de lanzar sonidos y las acciones requeridas para los dos Easter Eggs:
- *      - En la pantalla coleccionables (guide_screen_4) -> Muestra un video como respuesta a 4 clicks.
- *      - En la pantalla personajes (guide_screen_2) -> Muestra llamas como respuesta a una pulsación larga.
+ * - En la pantalla coleccionables (guide_screen_4) -> Muestra un video como respuesta a 4 clicks.
+ * - En la pantalla personajes (guide_screen_2) -> Muestra llamas como respuesta a una pulsación larga.
  *
  * @author Fco José Rodríguez Ruiz
  * @version 1.0.0
@@ -68,12 +68,12 @@ public class UserGuideManager {
     /**
      * Constructor de UserGuideManager.
      *
-     * @param activity Contexto de la actividad que utiliza la guía.
+     * @param activity          Contexto de la actividad que utiliza la guía.
      * @param sharedPreferences SharedPreferences para gestionar el estado de la guía: Vista o No Vista.
-     * @param guideScreens Array de vistas correspondientes a las pantallas de la guía.
-     * @param navController Controlador de navegación para manejar destinos. Permitirá la carga de los fragments de forma automática desde aquí.
-     * @param constraintLayout Layout del contenedor de navegación.
-     * @param toolbar Barra de acción de la actividad.
+     * @param guideScreens      Array de vistas correspondientes a las pantallas de la guía.
+     * @param navController     Controlador de navegación para manejar destinos. Permitirá la carga de los fragments de forma automática desde aquí.
+     * @param constraintLayout  Layout del contenedor de navegación.
+     * @param toolbar           Barra de acción de la actividad.
      */
     public UserGuideManager(FragmentActivity activity, SharedPreferences sharedPreferences,
                             View[] guideScreens, NavController navController,
@@ -101,17 +101,17 @@ public class UserGuideManager {
 
     /**
      * Inicia la guía del usuario si no ha sido vista previamente.
-     *
+     * <p>
      * Este método realiza las siguientes acciones:
      * 1. Obtiene el estado de visualización de la guía desde las SharedPreferences ({@link SharedPreferences}),
-     *    utilizando la clave {@link #SETTING_VIEW_GUIDE}. Si no existe un valor previo, se asume {@code false}.
+     * utilizando la clave {@link #SETTING_VIEW_GUIDE}. Si no existe un valor previo, se asume {@code false}.
      * 2. Si la guía no ha sido vista previamente ({@code isViewed} es {@code false}):
-     *    - Bloquea la interfaz de usuario (UI) llamando a {@link #toLockUI(boolean)} con el valor {@code true}.
-     *    - Muestra la pantalla actual de la guía llamando a {@link #showScreen(int)}.
+     * - Bloquea la interfaz de usuario (UI) llamando a {@link #toLockUI(boolean)} con el valor {@code true}.
+     * - Muestra la pantalla actual de la guía llamando a {@link #showScreen(int)}.
      *
-     * @see SharedPreferences#getBoolean(String, boolean)
-     * @see #toLockUI(boolean)
-     * @see #showScreen(int)
+     * @see SharedPreferences#getBoolean(String, boolean) SharedPreferences#getBoolean(String, boolean)
+     * @see #toLockUI(boolean) #toLockUI(boolean)
+     * @see #showScreen(int) #showScreen(int)
      * @see Log
      */
     public void startGuide() {
@@ -393,22 +393,22 @@ public class UserGuideManager {
     /**
      * Avanza a la siguiente pantalla de la guía y gestiona la navegación entre fragmentos pero
      * haciendo uso de los action creados en el nav_graph.xml para que tenga lugar la animación.
-     *
+     * <p>
      * Este método realiza las siguientes acciones:
      * 1. Oculta la pantalla actual de la guía estableciendo su visibilidad a {@link View#GONE}.
      * 2. Incrementa el índice de la pantalla actual ({@code currentScreen}).
      * 3. Gestiona la navegación entre fragmentos cuando se alcanzan las pantallas 2 y 3:
-     *    - Si la pantalla actual es 2 (personajes), navega al fragmento {@code navigation_worlds} utilizando
-     *      {@link NavController#navigate(int)} y muestra la pantalla después de un retardo de 300 ms.
-     *    - Si la pantalla actual es 3 (mundos), navega al fragmento {@code navigation_collectibles} y muestra
-     *      la pantalla después de un retardo de 300 ms.
+     * - Si la pantalla actual es 2 (personajes), navega al fragmento {@code navigation_worlds} utilizando
+     * {@link NavController#navigate(int)} y muestra la pantalla después de un retardo de 300 ms.
+     * - Si la pantalla actual es 3 (mundos), navega al fragmento {@code navigation_collectibles} y muestra
+     * la pantalla después de un retardo de 300 ms.
      * 4. Para todos los casos, muestra la pantalla correspondiente llamando a {@link #showScreen(int)}. Esto
-     *      hace que se cargue la siguiente pantalla de la guia.
+     * hace que se cargue la siguiente pantalla de la guia.
      *
-     * @see NavController#navigate(int)
+     * @see NavController#navigate(int) NavController#navigate(int)
      * @see Handler
      * @see Looper
-     * @see #showScreen(int)
+     * @see #showScreen(int) #showScreen(int)
      */
     public void nextScreen() {
         guideScreens[currentScreen].setVisibility(View.GONE);
@@ -430,20 +430,20 @@ public class UserGuideManager {
     /**
      * Retrocede a la anterior pantalla de la guía y gestiona la navegación entre fragmentos pero
      * haciendo uso de los action creados en el nav_graph.xml para que tenga lugar la animación.
-     *
+     * <p>
      * Este método realiza las siguientes acciones:
      * 1. Oculta la pantalla actual de la guía estableciendo su visibilidad a {@link View#GONE}.
      * 2. Incrementa el índice de la pantalla actual ({@code currentScreen}).
      * 3. Gestiona la navegación entre fragmentos cuando se alcanzan las pantallas 2 y 3
      * 4. Para todos los casos, muestra la pantalla correspondiente llamando a {@link #showScreen(int)}. Esto
-     *      hace que se cargue la pantalla anterior de la guia.
+     * hace que se cargue la pantalla anterior de la guia.
      * (NOTA: Este método no está completamente funcional de momento. No se usa, para lo que se han dejado
      * los objetos correspondientes - button prev_button - con atributo android:visibility="gone"
      *
-     * @see NavController#navigate(int)
+     * @see NavController#navigate(int) NavController#navigate(int)
      * @see Handler
      * @see Looper
-     * @see #showScreen(int)
+     * @see #showScreen(int) #showScreen(int)
      */
     public void prevScreen() {
         guideScreens[currentScreen].setVisibility(View.GONE);
@@ -466,26 +466,23 @@ public class UserGuideManager {
     /**
      * Finaliza la guía del usuario y realiza las operaciones necesarias para limpiar y guardar el estado.
      * Para proceder, se lleva a cabo la solicitud al usuario para cancelar la guía usando una pantalla de alerta
-     *
+     * <p>
      * OBSEVACIÓN: Unicamente se solicita confirmación para salir de la guía en el caso de que se halla
-     *              pulsado el botón de "salir" desde alguna pantalla que no sea la última de la guia,
-     *              ya que se sobreentiende que en este caso ha llegado al final y no tiene sentido la petición.
-     *
+     * pulsado el botón de "salir" desde alguna pantalla que no sea la última de la guia,
+     * ya que se sobreentiende que en este caso ha llegado al final y no tiene sentido la petición.
+     * <p>
      * Este método realiza las siguientes acciones (Si la petición del usuario ha sido Avandonar la Guía):
      * 1. Oculta todas las pantallas de la guía llamando a {@link #hideAllScreens()}.
      * 2. Desbloquea la interfaz de usuario (UI) llamando a {@link #toLockUI(boolean)} con el valor {@code false}.
      * 3. Libera la memoria utilizada por el reproductor de sonidos llamando a {@link SoundManager#freeMemoryPlayer()}.
      * 4. Guarda el estado de visualización de la guía llamando a {@link #setGuideVisualized(boolean)} con el valor
-     *    proporcionado en el parámetro {@code isSeen}.
+     * proporcionado en el parámetro {@code isSeen}.
      *
-     * @param isSeen Indica si la guía ha sido completamente vista por el usuario.
-     *              - {@code true}: La guía ha sido vista completamente.
-     *              - {@code false}: La guía no ha sido vista completamente. Se reproduce nuevamente.
-     *
-     * @see #hideAllScreens()
-     * @see SoundManager#freeMemoryPlayer()
-     * @see #setGuideVisualized(boolean)
-     * @see #viewUserGuide(boolean)
+     * @param isSeen Indica si la guía ha sido completamente vista por el usuario.              - {@code true}: La guía ha sido vista completamente.              - {@code false}: La guía no ha sido vista completamente. Se reproduce nuevamente.
+     * @see #hideAllScreens() #hideAllScreens()
+     * @see SoundManager#freeMemoryPlayer() SoundManager#freeMemoryPlayer()
+     * @see #setGuideVisualized(boolean) #setGuideVisualized(boolean)
+     * @see #viewUserGuide(boolean) #viewUserGuide(boolean)
      */
     public void endGuide(boolean isSeen) {
         hideAllScreens();
@@ -676,14 +673,11 @@ public class UserGuideManager {
     /**
      * Actualiza el estado de visualización de la guía en las SharedPreferences.
      *
-     * @param isVisualized Indica si la guía ha sido visualizada.
-     *                    - {@code true}: La guía ha sido visualizada.
-     *                    - {@code false}: La guía no ha sido visualizada.
-     *
+     * @param isVisualized Indica si la guía ha sido visualizada.                    - {@code true}: La guía ha sido visualizada.                    - {@code false}: La guía no ha sido visualizada.
      * @see SharedPreferences
-     * @see SharedPreferences.Editor#putBoolean(String, boolean)
-     * @see SharedPreferences.Editor#apply()
-     * */
+     * @see SharedPreferences.Editor#putBoolean(String, boolean) SharedPreferences.Editor#putBoolean(String, boolean)
+     * @see SharedPreferences.Editor#apply() SharedPreferences.Editor#apply()
+     */
     public void setGuideVisualized(boolean isVisualized) {
         sharedPreferences.edit().putBoolean(SETTING_VIEW_GUIDE, isVisualized).apply();
     }
