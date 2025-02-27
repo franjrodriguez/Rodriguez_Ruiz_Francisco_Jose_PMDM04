@@ -26,9 +26,9 @@ import dam.pmdm.spyrothedragon.R;
 /**
  * Clase que gestiona la guía de usuario de la aplicación Spyro The Dragon.
  * Controla la visualización secuencial de pantallas de guía con animaciones y navegación.
- * Tambien se encarga de lanzar sonidos y las acciones requeridas para los dos Easter Egg:
- *      - En la pantalla coleccionables (guide_screen_4) -> Muestra un video como respuesta a 4 clicks
- *      - En la pantalla personajes (guide_screen_2) -> Muestra llamas como respuesta a una pulsación larga
+ * También se encarga de lanzar sonidos y las acciones requeridas para los dos Easter Eggs:
+ *      - En la pantalla coleccionables (guide_screen_4) -> Muestra un video como respuesta a 4 clicks.
+ *      - En la pantalla personajes (guide_screen_2) -> Muestra llamas como respuesta a una pulsación larga.
  *
  * @author Fco José Rodríguez Ruiz
  * @version 1.0.0
@@ -69,7 +69,7 @@ public class UserGuideManager {
      * Constructor de UserGuideManager.
      *
      * @param activity Contexto de la actividad que utiliza la guía.
-     * @param sharedPreferences SharedPreferences para gestionar el estado de la guía: Vista o No Vista
+     * @param sharedPreferences SharedPreferences para gestionar el estado de la guía: Vista o No Vista.
      * @param guideScreens Array de vistas correspondientes a las pantallas de la guía.
      * @param navController Controlador de navegación para manejar destinos. Permitirá la carga de los fragments de forma automática desde aquí.
      * @param constraintLayout Layout del contenedor de navegación.
@@ -123,6 +123,11 @@ public class UserGuideManager {
         }
     }
 
+    /**
+     * Muestra u oculta la guía de usuario.
+     *
+     * @param toOpen Si es {@code true}, muestra la guía; si es {@code false}, la oculta.
+     */
     private void viewUserGuide(boolean toOpen) {
         FrameLayout guideLayout = constraintLayout.findViewById(R.id.interactive_guide_layout);
         Log.i(TAG, "viewUserGuide -> guideLayout: " + guideLayout);
@@ -142,7 +147,10 @@ public class UserGuideManager {
     }
 
     /**
-     * Muestra una pantalla específica de la guía con una animación de desvanecimiento (fade-in).
+     * Muestra una pantalla específica de la guía con una animación de desvanecimiento (fade-in), mientras
+     * el resto de pantallas las muestra tal cual. No tendría (desde mi punto de vista) sentido aplicar un efecto
+     * a las pantallas 2 a 5 dado que como son transparentes (background) no se apreciaría. Sí, sin embargo, se
+     * aplicarán posteriormetne efectos y animaciones a los componentes de dichas pantallas en otros métodos.
      *
      * Este método realiza las siguientes acciones:
      * 1. Verifica si el índice de la pantalla ({@code screenIndex}) es válido.
@@ -419,6 +427,24 @@ public class UserGuideManager {
         showScreen(currentScreen);
     }
 
+    /**
+     * Retrocede a la anterior pantalla de la guía y gestiona la navegación entre fragmentos pero
+     * haciendo uso de los action creados en el nav_graph.xml para que tenga lugar la animación.
+     *
+     * Este método realiza las siguientes acciones:
+     * 1. Oculta la pantalla actual de la guía estableciendo su visibilidad a {@link View#GONE}.
+     * 2. Incrementa el índice de la pantalla actual ({@code currentScreen}).
+     * 3. Gestiona la navegación entre fragmentos cuando se alcanzan las pantallas 2 y 3
+     * 4. Para todos los casos, muestra la pantalla correspondiente llamando a {@link #showScreen(int)}. Esto
+     *      hace que se cargue la pantalla anterior de la guia.
+     * (NOTA: Este método no está completamente funcional de momento. No se usa, para lo que se han dejado
+     * los objetos correspondientes - button prev_button - con atributo android:visibility="gone"
+     *
+     * @see NavController#navigate(int)
+     * @see Handler
+     * @see Looper
+     * @see #showScreen(int)
+     */
     public void prevScreen() {
         guideScreens[currentScreen].setVisibility(View.GONE);
         currentScreen--;
@@ -662,7 +688,13 @@ public class UserGuideManager {
         sharedPreferences.edit().putBoolean(SETTING_VIEW_GUIDE, isVisualized).apply();
     }
 
-
+    /**
+     * Reinicia la guía interactiva volviendo a la primera pantalla.
+     * <p>
+     * Este método oculta todas las pantallas actuales, reinicia el índice de la pantalla
+     * actual a la primera (índice 0) y muestra nuevamente la primera pantalla.
+     * </p>
+     */
     private void repeatGuide() {
         hideAllScreens();
         currentScreen = 0;
@@ -792,6 +824,14 @@ public class UserGuideManager {
         }
     }
 
+    /**
+     * Obtiene el número de repeticiones de la animacion de Elora según el índice de la pantalla.
+     * Con este método se ha pretendido intentar de un modo precario (principalmente por falta de tiempo)
+     * de ajustar el tiempo de animación al de la narración auditiva. Por lo tanto es algo aproximado.
+     *
+     * @param screenIndex Índice de la pantalla.
+     * @return ID del recurso.
+     */
     private int getRepetitionNarrationOfElora(int screenIndex) {
         switch (screenIndex) {
             case 0:

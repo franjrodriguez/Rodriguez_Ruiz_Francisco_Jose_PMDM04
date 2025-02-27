@@ -41,27 +41,37 @@ Describe las funcionalidades clave de la aplicación.
 Las principales funcionalidades de la app son estas:
 
 1. **Diseños XML**
-   
+
    * Utilizando la clase Drawable, se muestra al usuario la información qeu requiere para el uso de la app.
-   
+
 2. **Pantallas de la guía**
-   
+
    * A través de varias pantallas (mientra la app cambia de forma automática entre ellas) indicando  lo que el usuario va a ir encontrando en cada una de ellas.
    * Además de esto, podrá encontrar Easter Eggs en dos de las pantallas.
    * La pantalla principal da la bienvenida a la guía de usuario y tras pantallas mostradas durante 
-   
+
 3. **Easter Eggs**
-   
+
    * En la pantalla de personajes, si el usuario presiona con un click mantenido la imagen de Spyro, se muestra una llama saliendo de la boca de Spyro.
    * En la pantalla de coleccionables, si el usuario presiona cuatro veces sobre la gema, se mostrará un video sobre el juego de Spyro.
-   
-5. **Ajustes** (de forma implicita)
-   
+
+4. **Ajustes** (de forma implicita)
+
    * La app gestiona si el usuario ha visualizado previamente la guia de usuario. Para ello se hace uso de las SharedPreferences, almacenando el estado de la visualización de la guía (true si ya ha sido visualizada o false en el caso contrario).
-	
-	   ------
-	
-	   
+
+#### En cuanto al modo en que se ha desarrollado la app
+
+1. La app viene desarrollada previamente y se trata de añadir el código relativo a la guia de usuario
+2. Para diferenciar claramente ambos, se crea un package llamado "**guide**".
+3. Archivos contenidos en el package:
+   - *FlameView.java*: Esta clase es una vista personalizada que simula el efecto de llamas que salen de la boca de Spyro. Utiliza partículas para crear un efecto visual de fuego, las cuales se generan, actualizan y dibujan en un Canvas para crear la animación. 
+   - *SoundManager.java*: Clase que permite gestionar la reproducción de sonidos. Proporciona métodos para reproducir, obtener la duración de un sonido y liberar los recursos asociados por MediaPlayer una vez finalizada la reproducción.
+   - *UserGuideManager.java*: Esta clase es la clave que mantiene la gestión de toda la guia de usuario. De hecho, desde MainActivity, se crea una instancia de UserGuideManager y una vez se lanza el método de comienzo (startGuide), ya todo se deja en manos de esta clase, no teniendo que gestionar nada desde MainActivity.
+   - *VideoManager.java*: Esta clase es una utilidad para gestionar la reproducción de videos en la app. Encontramos métodos para reproducir, pausar, detener y restaurar la reproducción de videos (no están todas operativas desde la app). Tambien gestiona la visibilidad de la interfaz de usuario durante la reproducción, permitiendo controlar el cambio de orientación del dispositivo (horizontal/vertical), sin que se pierda la reproducción.
+
+------
+
+
 
 ### Tecnologías utilizadas
 Las principales tecnologías y librerías usadas en el proyecto se relacionan a continuación:
@@ -140,12 +150,27 @@ Al igual que para el proyecto anterior, el mejor modo (personalmente) que he hal
 
 Tal como me pasó en el proyecto anterior (Pokémon), me he dejado en el cajón un montón de ideas que se pueden implementar y que mejoran considerablemente la aplicación:
 
-- Botón de retroceso
+- Botón de retroceso (preparado tanto en los XML como en el código pero sin terminar)
 - Ajustar mejor la coordinación entre el tiempo de emisión de los sonidos y las animaciones (para que ambos comiencen y terminen al tiempo)
 - Añadir más información (almacenada por ejemplo en SharedPreferences) donde se solicite el nombre del jugador y la narración vaya en función de su nombre
+- Posibiblidad de interacción con Elora si se la toca, dando lugar a distintas repuestas dependiendo del tipo de toque: uno, varios, uno largo, ...
 - Etc.
 
-Esto es algo que deberé mejorar. Aprender a limitarme a las condiciones que inicialmente se solicitan de la app, ya que tal como me dijo en una ocasión un amigo: "¿Qué hubiera pasado si Microsoft en lugar de empezar con Windows 3.0 hubiera seguido corrigiendo errores y mejorando el sistema?... Que nadie tendría Windows porque seguirían mejorándolo antes de entregarlo. Mejor entrega con errores o posibles mejoras y luego añades, que no entregar nunca". Así que: hasta aquí de momento.
+Esto es algo que deberé mejorar. Aprender a limitarme a las condiciones que inicialmente se solicitan de la app, ya que tal como me dijo en una ocasión un amigo: "¿Qué hubiera pasado si Microsoft en lugar de entregar Windows 3.0 hubiera seguido corrigiendo errores y mejorando el sistema?... Que nadie tendría Windows porque seguirían mejorándolo antes de entregarlo. Mejor entrega con errores o posibles mejoras y luego añades, que no entregar nunca". Así que: hasta aquí de momento.
+
+#### Principales Retos con los que me he encontrado
+
+- Gestionar adecuadamente los *frames como overlays* para que queden por encima de la barra de menú. Esto me llevó a profundizar en como funciona el nivel z en Android y como gestiona la posición por defecto de determinados componentes y como se pueden alterar.
+- La creación de la *llama*, supuso un enorme esfuerzo. Comencé creando varios archivos de imagen a modo de Elora_*.png para ser usados como frames. Pero no lograba un efecto que me gustara. Así que pensé en los sprites sheets, ya que leyendo documentación ví que Android los gestiona, siempre que se le indique como están posicionados en el archivo de imagen (como tabla bidimensional). Sin embargo, los mejores archivos eran de pago y ... bueno, seguí buscando, así que los que me encontré no eran tan buenos, era más dificil de controlar en pantalla, y el efecto no era bueno. Seguí buscando y encontré la posibilidad de trabajar con particulas. La idea la encontré en un sitio donde se enseña a manejar Unity con una especie de elefante volador que genera particulas saliendo de una especie de cohete. Así que me decanté por encontrar el modo. Solicitando ayuda de la IA y ajustando código y valores, terminé por dejar esta opción implementada.
+- El resto, bueno, sobretodo la forma de *gestionar los objetos de cada xml desde código.* Algo completamente nuevo para mí, de modo que creando arrays con los nombres de las ID's he podido crear métodos que unicamente dependen del valor de **currentScreen** para saber en que pantalla de la guía se encuentran y activar los botones y recursos necesarios para esa pantalla.
 
 ***
 ### Capturas de pantalla
+
+![Pantalla de bienvenida](https://github.com/franjrodriguez/Rodriguez_Ruiz_Francisco_Jose_PMDM04/blob/main/assets/screen_1.png)
+
+![Pantalla de la guia de personajes](https://github.com/franjrodriguez/Rodriguez_Ruiz_Francisco_Jose_PMDM04/blob/main/assets/screen_2.png)
+
+![Solicitud de avandonode la guia](https://github.com/franjrodriguez/Rodriguez_Ruiz_Francisco_Jose_PMDM04/blob/main/assets/screen_3.png)
+
+![Finalización de la guía](https://github.com/franjrodriguez/Rodriguez_Ruiz_Francisco_Jose_PMDM04/blob/main/assets/screen_4.png)
