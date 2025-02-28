@@ -3,6 +3,7 @@ package dam.pmdm.spyrothedragon.guide;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.ExifInterface;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,6 +20,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.ui.PlayerView;
 import androidx.navigation.NavController;
 
 import dam.pmdm.spyrothedragon.R;
@@ -618,9 +621,11 @@ public class UserGuideManager {
      */
     private void setupVideoButton(View guideScreen, Activity activity) {
         Button buttonPlayVideo = guideScreen.findViewById(R.id.button_play_video);
-        final VideoView videoView = activity.findViewById(R.id.video_view);
-        VideoManager videoManager = new VideoManager(activity, videoView, toolbar);
+        final PlayerView playerView = activity.findViewById(R.id.video_view);
         FrameLayout overlayVideo = activity.findViewById(R.id.overlay_video); // FrameLayout que cubre la pantalla
+
+        // Instancia VideoManager con la PlayerView
+        VideoManager videoManager = new VideoManager(activity, playerView, toolbar);
 
         if (buttonPlayVideo != null) {
             buttonPlayVideo.setOnClickListener(v -> {
@@ -631,12 +636,12 @@ public class UserGuideManager {
                 if (buttonClickCount == 4) {
                     buttonClickCount = 0; // Reiniciar el contador
 
-                    if (videoView != null && overlayVideo != null) {    // La capa visible la gestiona VideoManager
+                    if (playerView != null && overlayVideo != null) {    // La capa visible la gestiona VideoManager
                         // Reproducir el video
-                        Log.i(TAG, "Tengo videoView y overlayVideo asi que empiezo la pelicula...");
+                        Log.i(TAG, "Tengo playerView y overlayVideo asi que empiezo la pelicula...");
                         videoManager.playVideo(R.raw.video_of_spyrothedragon, overlayVideo);
                     } else {
-                        Log.e(TAG, "setupVideoButton -> videoView: " + videoView);
+                        Log.e(TAG, "setupVideoButton -> playerView: " + playerView);
                         Log.e(TAG, "setupVideoButton -> overlayVideo: " + overlayVideo);
                     }
                 }

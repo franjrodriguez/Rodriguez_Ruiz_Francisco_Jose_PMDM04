@@ -1,9 +1,11 @@
 README.md
 
 ## Tarea Unidad 4 PMDM - Spyro The Dragon
-#### Autor: Francisco José Rodríguez Ruiz
-
-Módulo FP DAM PMDM (Distancia)
+| Autor:                   | Módulo:          |
+| ------------------------ | ---------------- |
+| Fco. José Rodríguez Ruiz | FP DAM DISTANCIA |
+| Versión:                 |                  |
+| 1.0.0                    |                  |
 
 ### Índice de contenidos
 - **Introducción**: Explica brevemente el propósito de la aplicación y qué hace. 
@@ -87,8 +89,8 @@ Las principales tecnologías y librerías usadas en el proyecto se relacionan a 
   - Se utiliza **SharedPreferences** para almacenar y recuperar datos simples, como el estado de visualización de la guía de usuario (`isViewedGuide`).
 * **MediaPlayer**:
   - Para la reproducción de sonidos, se utiliza la clase **MediaPlayer**. Esto permite reproducir efectos de sonido y narraciones en la guía de usuario.
-* **VideoView**:
-  - Para la reproducción de videos, se utiliza **VideoView**, que permite incrustar y reproducir videos en la aplicación.
+* **ExoPlayer**:
+  - Para la reproducción de videos, se utiliza **ExoPlayer**, que permite incrustar y reproducir videos en la aplicación.
 * **Canvas y Custom Views**:
   - La aplicación utiliza **Canvas** para dibujar animaciones personalizadas, como las llamas de Spyro en la clase `FlameView`. Esto permite crear efectos visuales personalizados.
 * **Animaciones**:
@@ -109,13 +111,13 @@ Las principales tecnologías y librerías usadas en el proyecto se relacionan a 
 * Pasos para clonar el repositorio (Desde Android Studio)
   * Entramos en Android Studio IDE
   * Si no tenemos ningún proyecto abierto, pinchamos sobre el botón [Clone Repository]
-  * En el caso de estar trabajando con algún proyecto vamos a **File > New > Projecto from Version Control**
+  * En el caso de estar trabajando con algún proyecto vamos a **File > New > Project from Version Control**
   * En la ventana que se abre, seleccionamos **Git** como Version Control
   * Desde el navegador, debemos ir a l repositorio de GitHub que queremos clonar y hacemos click sobre el botón verde [Code].
   * Copiamos la URL que se muestra.
   * Pegamos dicha URL en el campo URL del Control de Versiones de Android.
   * En el campo "Directory" le indicamos la carpeta en la que vamos a almacenar el proyecto clonado.
-  * Hacemos click en el boton [Clone]. Con estos pasos, deberías tener una copia del proyecto en tu equipo local.
+  * Hacemos click en el botón [Clone]. Con estos pasos, deberías tener una copia del proyecto en tu equipo local.
 * En manifest.xml debemos añadir el siguiente código dentro de la opción activity:
 
   ```
@@ -125,26 +127,30 @@ Las principales tecnologías y librerías usadas en el proyecto se relacionan a 
   Permite ayudar a la gestión del cambio de orientación del movil durante la reproducción del video, de forma que facilite al cambio de horizontalidad del mismo.
 
 * Instalar dependencias necesarias para ejecutar la aplicación
-  Las dependencias son un conjunto de librerias que se deben añadir al archivo ***build.gradle.kts (:app)
+  Las dependencias son un conjunto de librerías que se deben añadir al archivo ***build.gradle.kts (:app)
 
-  - En dependencies
+  - En dependencias
     - com.google.android.material:material:1.12.0: Componentes de diseño moderno de Google
     - androidx.coordinatorlayout:coordinatorlayout:1.2.0: Contenedores para gestionar transiciones y desplazamientos.
     - androidx.drawerlayout:drawerlayout:1.2.0: Permite el uso de un Navigation Drawer.
+    - androidx.media3:media3-exoplayer:1.5.1: Permite la reproducción de medios con ExoPlayer.
+    - androidx.media3:media3-ui:1.5.1: Proporciona una interfaz de usuario personalizable para controlar la reproducción de medios. 
    ```    // Firebase BoM
       implementation("com.google.android.material:material:1.12.0")
       implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
       implementation("androidx.drawerlayout:drawerlayout:1.2.0")
+      implementation("androidx.media3:media3-exoplayer:1.5.1")
+      implementation("androidx.media3:media3-ui:1.5.1")
   
 ***
 ### Conclusiones del desarrollador 
 Me he dado cuenta de que cualquier proyecto lo convierto en un reto de mejora tanto personal como profesional. Si Pokedex supuso un gran esfuerzo por el cambio en el modelo de paradigma que conlleva el desarrollo de app Android. Cuando comencé con Java, pasar de una programación lineal, modular a OOP ya fue un reto. Android ha supuesto el siguiente paso al unir OOP y Programación Orientada a Eventos. 
 
-De cualquier modo, cada vez me siento más cómodo, ya que aunque tenemos que tener la globalidad del código en nuestra cabeza mientras llevamos a cabo el desarrollo, trabajar con "trozos" considerablemente más pequeños facilita en mucho el desarrollo y la posterior búsqueda de errores.
+De cualquier modo, cada vez me siento más cómodo, ya que aunque tenemos que tener la globalidad del código en nuestra cabeza mientras llevamos a cabo el desarrollo, trabajar con "trozos" considerablemente más pequeños facilita en mucho el desarrollo y la posterior búsqueda de fallos.
 
 Corrigiendo errores del anterior proyecto, comencé trabajando profundamente en la modularidad del proyecto, de donde podría obtener más información necesaria, que herramientas podría necesitar, etc. Aún así, nunca te puedes quedar con la primera opción, ya que en la medida que implementas, vas encontrado limitaciones y errores, que te condicionan a tomar otros caminos, añadir o eliminar opciones que pensabas que eran innecesarias o necesarias según el caso.
 
-Tener que hacer uso de la IA como herramienta de busqueda rápida de información, leer y releer material escrito (tanto online como en papel), localizar en foros especializados como se han resuelto determinados problemas con los que me he ido encontrando se han convertido en herramientas de incalculable valor como desarrollador.
+Tener que hacer uso de la IA como herramienta de búsqueda rápida de información, leer y releer material escrito (tanto online como en papel), localizar en foros especializados como se han resuelto determinados problemas con los que me he ido encontrando se han convertido en herramientas de incalculable valor como desarrollador.
 
 Al igual que para el proyecto anterior, el mejor modo (personalmente) que he hallado para ir solventando determinadas técnicas y la implementación de determinadas tecnologías es el de ir creando pequeños proyectos que únicamente se encargan por ejemplo de solucionar el visionado de un video o la gestión de archivos de sonido. De este modo, luego todo se convierte en un "más o menos" copiar y pegar adaptando algunas variables y retoques para integrarlo en el código. Me he percatado que a mí, trabajar así me facilita mucho posteriormente la creación del código que necesito y por otra parte, voy creando una biblioteca de software que podré reutilizar en cualquier momento.
 
@@ -153,16 +159,15 @@ Tal como me pasó en el proyecto anterior (Pokémon), me he dejado en el cajón 
 - Botón de retroceso (preparado tanto en los XML como en el código pero sin terminar)
 - Ajustar mejor la coordinación entre el tiempo de emisión de los sonidos y las animaciones (para que ambos comiencen y terminen al tiempo)
 - Añadir más información (almacenada por ejemplo en SharedPreferences) donde se solicite el nombre del jugador y la narración vaya en función de su nombre
-- Posibiblidad de interacción con Elora si se la toca, dando lugar a distintas repuestas dependiendo del tipo de toque: uno, varios, uno largo, ...
-- Etc.
-
-Esto es algo que deberé mejorar. Aprender a limitarme a las condiciones que inicialmente se solicitan de la app, ya que tal como me dijo en una ocasión un amigo: "¿Qué hubiera pasado si Microsoft en lugar de entregar Windows 3.0 hubiera seguido corrigiendo errores y mejorando el sistema?... Que nadie tendría Windows porque seguirían mejorándolo antes de entregarlo. Mejor entrega con errores o posibles mejoras y luego añades, que no entregar nunca". Así que: hasta aquí de momento.
+- Posibilidad de interacción con Elora si se la toca, dando lugar a distintas repuestas dependiendo del tipo de toque: uno, varios, uno largo, ...
+- Posibilidad de visionado de varios vídeos, dependiendo de donde se haga el toque en pantalla, o bien, seleccionarlos de forma aleatoria, lo que invitaría a releer la guía para ver videos diferentes, ...
 
 #### Principales Retos con los que me he encontrado
 
 - Gestionar adecuadamente los *frames como overlays* para que queden por encima de la barra de menú. Esto me llevó a profundizar en como funciona el nivel z en Android y como gestiona la posición por defecto de determinados componentes y como se pueden alterar.
 - La creación de la *llama*, supuso un enorme esfuerzo. Comencé creando varios archivos de imagen a modo de Elora_*.png para ser usados como frames. Pero no lograba un efecto que me gustara. Así que pensé en los sprites sheets, ya que leyendo documentación ví que Android los gestiona, siempre que se le indique como están posicionados en el archivo de imagen (como tabla bidimensional). Sin embargo, los mejores archivos eran de pago y ... bueno, seguí buscando, así que los que me encontré no eran tan buenos, era más dificil de controlar en pantalla, y el efecto no era bueno. Seguí buscando y encontré la posibilidad de trabajar con particulas. La idea la encontré en un sitio donde se enseña a manejar Unity con una especie de elefante volador que genera particulas saliendo de una especie de cohete. Así que me decanté por encontrar el modo. Solicitando ayuda de la IA y ajustando código y valores, terminé por dejar esta opción implementada.
-- El resto, bueno, sobretodo la forma de *gestionar los objetos de cada xml desde código.* Algo completamente nuevo para mí, de modo que creando arrays con los nombres de las ID's he podido crear métodos que unicamente dependen del valor de **currentScreen** para saber en que pantalla de la guía se encuentran y activar los botones y recursos necesarios para esa pantalla.
+- El resto, bueno, sobre todo la forma de *gestionar los objetos de cada XML desde código.* Algo completamente nuevo para mí, de modo que creando arrays con los nombres de las ID's he podido crear métodos que únicamente dependen del valor de **currentScreen** para saber en que pantalla de la guía se encuentran y activar los botones y recursos necesarios para esa pantalla.
+- Inicialmente llevé a cabo la gestión del video usando la librería que forma parte del paquete estándar de Android MediaPlayer. He hecho, el sonido lo gestiono con esta librería. Sin embargo, durante las pruebas repetidas de reproducción del video, este se entrecortaba y más que nada, el audio dejaba de oírse. Más aún cuando hacia un cambio en la verticalidad del móvil. Intenté reasignar más recursos internamente desde código al multimedia, pero aún así. He actualizado los parámetros del dispositivo virtual. Pero seguí buscando y encontré ExoPlayer. Así que modifiqué el código para usar esta librería. 
 
 ***
 ### Capturas de pantalla

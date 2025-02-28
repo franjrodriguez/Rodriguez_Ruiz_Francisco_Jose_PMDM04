@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.media3.ui.PlayerView;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -103,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
  */
 
         // Busco el VideoView
-        VideoView videoView = findViewById(R.id.video_view);
+        PlayerView videoView = findViewById(R.id.video_view);
         if (videoView == null) {
-            Log.e("MainActivity", "VideoView no encontrado en activity_main.xml");
+            Log.e("MainActivity", "PLayerView no encontrado en activity_main.xml");
         } else {
             videoManager = new VideoManager(this, videoView, toolbar);
         }
@@ -134,7 +135,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (videoManager != null) {
-            outState.putInt("video_position", videoManager.getCurrentPosition());
+            videoManager.savePosition();
+            outState.putInt("video_position", videoManager.getLastPosition());
             outState.putBoolean("video_playing", videoManager.isPlaying());
             outState.putInt("video_res_id", videoManager.getCurrentVideoResId()); // Guardar el recurso
         }
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Infla el menú de opciones en la barra de acción.
      *
-     * @param menu El menú a inflar.
+     * @param menuItem El menú a inflar.
      * @return true si el menú se infló correctamente.
      */
     private boolean selectedBottomMenu(@NonNull MenuItem menuItem) {

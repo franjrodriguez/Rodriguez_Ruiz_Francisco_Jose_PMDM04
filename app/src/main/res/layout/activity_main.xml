@@ -85,11 +85,13 @@
         android:elevation="20dp"
         android:visibility="gone">
         <!-- VideoView que ocupa toda la pantalla -->
-        <VideoView
-            android:id="@+id/video_view"
+        <androidx.media3.ui.PlayerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/video_view"
             android:layout_gravity="center"
-            android:focusableInTouchMode="true" />
+            android:focusableInTouchMode="true"
+            app:resize_mode="fit"/>
+
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

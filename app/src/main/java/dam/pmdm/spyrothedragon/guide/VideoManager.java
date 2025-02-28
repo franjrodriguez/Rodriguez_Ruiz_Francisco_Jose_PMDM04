@@ -10,6 +10,9 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.media3.common.MediaItem;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.ui.PlayerView;
 
 import dam.pmdm.spyrothedragon.R;
 
@@ -26,23 +29,35 @@ import dam.pmdm.spyrothedragon.R;
  * @version 1.0.0
  */
 public class VideoManager {
-    private final VideoView videoView;
+    private ExoPlayer exoPlayer;
+    private final PlayerView playerView;
     private final Context context;
+    private final Toolbar toolbar;
+
     private int lastPosition = 0; // Guarda la posición del video
     private int currentVideoResId = 0; // Aquí se guarda el recurso de video (ID)
-    private final Toolbar toolbar;
 
     /**
      * Constructor de la clase {@code VideoManager}.
      *
      * @param context   El contexto de la aplicación.
-     * @param videoView El {@link VideoView} que se utilizará para reproducir los videos.
+     * @param playerView El {@link PlayerView} que se utilizará para reproducir los videos.
      * @param toolbar   La barra de herramientas que se ocultará durante la reproducción del video.
      */
-    public VideoManager(Context context, VideoView videoView, Toolbar toolbar) {
-        this.videoView = videoView;
+    public VideoManager(Context context, PlayerView playerView, Toolbar toolbar) {
+        this.playerView = playerView;
         this.toolbar = toolbar;
         this.context = context;
+        initializePlayer();
+    }
+
+    public int getLastPosition() {
+        return lastPosition;
+    }
+
+    private void initializePlayer() {
+        exoPlayer = new ExoPlayer.Builder(context).build();
+        playerView.setPlayer(exoPlayer);
     }
 
     /**
@@ -53,32 +68,41 @@ public class VideoManager {
      */
     public void playVideo(int videoResId, FrameLayout overlay) {
         Uri videoUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + videoResId);
-        videoView.setVideoURI(videoUri);
+        MediaItem mediaItem = new MediaItem.Builder().setUri(videoUri).build();
+
+        exoPlayer.setMediaItem(mediaItem);
+        exoPlayer.prepare();
+        exoPlayer.play();
         currentVideoResId = videoResId;
 
+        // Ocultar la UI
         toolbar.setVisibility(View.GONE);
         if (context instanceof AppCompatActivity) {
             ((AppCompatActivity) context).findViewById(R.id.navView).setVisibility(View.GONE);
-            ((AppCompatActivity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); // Ocultar barra de estado
+            ((AppCompatActivity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
         overlay.setVisibility(View.VISIBLE);
         overlay.bringToFront();
-        videoView.setVisibility(View.VISIBLE);
-        videoView.start();
+        playerView.setVisibility(View.VISIBLE);
 
         // Restaurar la posición si existía antes
         if (lastPosition > 0) {
-            videoView.seekTo(lastPosition);
+            exoPlayer.seekTo(lastPosition);
         }
 
-        videoView.setOnPreparedListener(mp -> {
-            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            audioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        // Listener para detectar el fin del video
+        exoPlayer.addListener(new androidx.media3.common.Player.Listener() {
+            @Override
+            public void onPlaybackStateChanged(int state) {
+                if (state == androidx.media3.common.Player.STATE_ENDED) {
+                    stopVideo(overlay);
+                }
+            }
         });
+    }
 
-        videoView.setOnCompletionListener(mp -> {
-            stopVideo(overlay);
-        });
+    public int getCurrentVideoResId() {
+        return currentVideoResId;
     }
 
     /**
@@ -86,80 +110,69 @@ public class VideoManager {
      *
      * @param overlay El {@link FrameLayout} que se utilizó como superposición durante la reproducción del video.
      */
-    private void stopVideo(FrameLayout overlay) {
-        videoView.stopPlayback();
-        videoView.setVisibility(View.GONE);
+    public void stopVideo(FrameLayout overlay) {
+        if (exoPlayer != null) {
+            exoPlayer.stop();
+            exoPlayer.clearMediaItems();
+        }
+        playerView.setVisibility(View.GONE);
         overlay.setVisibility(View.GONE);
         toolbar.setVisibility(View.VISIBLE);
+
         if (context instanceof AppCompatActivity) {
-            ((AppCompatActivity) context).findViewById(R.id.navView).setVisibility(View.VISIBLE); // Mostrar BottomNavigationView
-            ((AppCompatActivity) context).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); // Ocultar barra de estado
+            ((AppCompatActivity) context).findViewById(R.id.navView).setVisibility(View.VISIBLE);
+            ((AppCompatActivity) context).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-        lastPosition = 0; // Reiniciar posición y el ID
+        lastPosition = 0;
         currentVideoResId = 0;
     }
 
     /**
-     * Guarda la posición actual del video para poder restaurarla más tarde.
+     * Guarda la posición del video antes de pausar o rotar la pantalla.
      */
     public void savePosition() {
-        lastPosition = videoView.getCurrentPosition(); // Guardar progreso antes de rotar
+        if (exoPlayer != null) {
+            lastPosition = (int) exoPlayer.getCurrentPosition();
+        }
     }
 
     /**
      * Restaura la posición del video a la última posición guardada.
      */
     public void restorePosition() {
-        if (lastPosition > 0) {
-            videoView.seekTo(lastPosition);
-            videoView.start();
+        if (exoPlayer != null && lastPosition > 0) {
+            exoPlayer.seekTo(lastPosition);
+            exoPlayer.play();
         }
     }
 
     /**
-     * Obtiene la posición actual del video que se está reproduciendo.
+     * Verifica si el video está en reproducción.
      *
-     * @return La posición actual del video en milisegundos, o {@code 0} si no hay ningún video reproduciéndose.
-     */
-    public int getCurrentPosition() {
-        return videoView != null ? videoView.getCurrentPosition() : 0;
-    }
-
-    /**
-     * Verifica si un video se está reproduciendo actualmente.
-     *
-     * @return {@code true} si el video se está reproduciendo, {@code false} en caso contrario.
+     * @return `true` si el video se está reproduciendo.
      */
     public boolean isPlaying() {
-        return videoView != null && videoView.isPlaying();
+        return exoPlayer != null && exoPlayer.isPlaying();
     }
 
     /**
-     * Obtiene el ID del recurso de video que se está reproduciendo actualmente.
-     *
-     * @return El ID del recurso de video, o {@code 0} si no hay ningún video reproduciéndose.
+     * Libera los recursos de ExoPlayer.
      */
-    public int getCurrentVideoResId() {
-        return currentVideoResId;
+    public void releasePlayer() {
+        if (exoPlayer != null) {
+            exoPlayer.release();
+            exoPlayer = null;
+        }
     }
 
-    /**
-     * Restaura el estado del video, incluyendo la posición y el estado de reproducción.
-     *
-     * @param context   El contexto de la aplicación.
-     * @param position  La posición del video que se desea restaurar.
-     * @param isPlaying Indica si el video debe comenzar a reproducirse automáticamente.
-     * @param overlay   El {@link FrameLayout} que se utilizará como superposición durante la reproducción del video.
-     */
     public void restoreVideoState(Context context, int position, boolean isPlaying, FrameLayout overlay) {
-        if (videoView != null && currentVideoResId != 0) {
-            Uri videoUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + currentVideoResId);
-            videoView.setVideoURI(videoUri); // Reasignar el recurso del video
-            videoView.seekTo(position);
+        if (currentVideoResId != 0) {
+            playVideo(currentVideoResId, overlay);
+            exoPlayer.seekTo(position);
             if (isPlaying) {
-                overlay.setVisibility(View.VISIBLE);
-                videoView.setVisibility(View.VISIBLE);
-                videoView.start();
+                exoPlayer.play();
+            } else {
+                exoPlayer.pause();
             }
         }
     }
