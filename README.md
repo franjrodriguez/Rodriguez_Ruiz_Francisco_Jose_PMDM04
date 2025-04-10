@@ -8,7 +8,8 @@ README.md
 | 1.0.0                    |                  |
 
 ### Índice de contenidos
-- **Introducción**: Explica brevemente el propósito de la aplicación y qué hace. 
+- **Introducción**: Explica brevemente el propósito de la aplicación y qué hace.
+- **Visualización Video Youtube de la app en funcionamiento**: Muestra la app en funcionamiento.
 - **Características principales**: Describe las funcionalidades clave de la aplicación. 
 - **Tecnologías utilizadas**: Enumera las principales tecnologías y librerías empleadas en el proyecto. 
 - **Instrucciones de uso**: Proporciona pasos para clonar el repositorio e instalar cualquier dependencia necesaria para ejecutar la aplicación. 
@@ -36,7 +37,11 @@ Con esto en mente:
 - IDE Android Studio
 - JDK Versión 8
 - Gradle Versión 8.10.2
-  
+
+***
+### Visualización Video Youtube de la app en funcionamiento
+[![Preview del video](https://img.youtube.com/vi/5ClzwH56GMM/0.jpg)](https://www.youtube.com/watch?v=5ClzwH56GMM
+
 ***
 ### Características principales
 Describe las funcionalidades clave de la aplicación.
