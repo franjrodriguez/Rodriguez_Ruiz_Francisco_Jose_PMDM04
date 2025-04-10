@@ -40,7 +40,7 @@ Con esto en mente:
 
 ***
 ### Visualización Video Youtube de la app en funcionamiento
-[![Preview del video](https://img.youtube.com/vi/5ClzwH56GMM/0.jpg)](https://www.youtube.com/watch?v=5ClzwH56GMM
+[![Preview del video](https://img.youtube.com/vi/5ClzwH56GMM/0.jpg)](https://www.youtube.com/watch?v=5ClzwH56GMM)
 
 ***
 ### Características principales
